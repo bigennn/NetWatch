@@ -58,7 +58,8 @@ Stand nach M3 (Mess-Task und Schreib-Task sind getrennt; dazwischen nur Wartesch
 - **Ursachenzuordnung** (Teil des Detektors), je Runde: `pc_lan`, wenn der Adapter getrennt ist oder jeder Ping „General Failure“ (11050) liefert; `unknown`, wenn kein Gateway bekannt ist oder der Router keine Pings beantwortet; `router`, wenn auch das Gateway nicht antwortet; sonst `provider`. Über den Aussetzer gilt die am weitesten vorne liegende Ursache.
 - **TrayAppContext** (App, M4): Symbol grün, rot oder grau, Hover-Text aus `TrayStatusText` (Core, höchstens 127 Zeichen, alle 10 s aufgefrischt), Menü mit „Protokollordner öffnen“, „Autostart“ (`HKCU…Run`), „Beenden“. Meldungen vom Mess-Task kommen über `SynchronizationContext.Post`. Ein Mutex verhindert eine zweite Instanz.
 - **Speicher:** `System.GC.HeapHardLimit` = 64 MB, damit der Garbage Collector unabhängig von der Cache-Größe des Prozessors regelmäßig aufräumt.
-- **ReportGenerator (Soll):** erzeugt HTML-Berichte mit selbst gezeichnetem SVG, öffnet sie im Standardbrowser; keine Diagrammbibliothek.
+- **Wochenbericht** (M5): `WeeklyReport` (Core) berechnet Raster, Messabdeckung, wiederkehrende Zeitfenster und Kennzahlen aus Aussetzern und Messphasen; `WeeklyReportHtml` (Core) erzeugt eine eigenständige HTML-Datei mit selbst gezeichnetem SVG; `WeeklyReportWriter` (App) liest die CSV-Dateien (auch wenn sie in Excel offen sind) und schreibt `report_week.html`. Aufruf über das Tray-Menü oder `--report-week`.
+- **Tagesbericht (Soll, M6):** folgt.
 
 ## Zeitbehandlung
 

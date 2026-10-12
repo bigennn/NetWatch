@@ -33,8 +33,8 @@ public static class EventCsv
         outage = null;
         string[] columns = line.Split(';');
         if (columns.Length != 9
-            || !TryParseUtc(columns[2], out DateTimeOffset startUtc)
-            || !TryParseUtc(columns[3], out DateTimeOffset endUtc)
+            || !Timestamps.TryParseUtc(columns[2], out DateTimeOffset startUtc)
+            || !Timestamps.TryParseUtc(columns[3], out DateTimeOffset endUtc)
             || !long.TryParse(columns[4], NumberStyles.None, CultureInfo.InvariantCulture, out long durationMs)
             || !TryParseCause(columns[5], out OutageCause cause))
         {
@@ -52,14 +52,6 @@ public static class EventCsv
             columns[8].Length == 0 ? null : columns[8]);
         return true;
     }
-
-    private static bool TryParseUtc(string text, out DateTimeOffset value) =>
-        DateTimeOffset.TryParseExact(
-            text,
-            "yyyy-MM-dd'T'HH:mm:ss.fff'Z'",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
-            out value);
 
     private static bool TryParseCause(string name, out OutageCause cause)
     {

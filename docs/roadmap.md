@@ -54,7 +54,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: F-09
 - Definition of Done: Tray-Menü „Wochenbericht öffnen“ erzeugt `report_week.html` aus den CSV-Dateien und öffnet ihn im Browser. SVG selbst gezeichnet, keine Diagrammbibliothek. Tests mit erzeugten Testdaten (z. B. täglicher Aussetzer um 02:00) sind grün.
 - So teste ich es selbst: Wochenbericht über das Menü öffnen und prüfen, ob die eigenen Kabeltests an der richtigen Stelle erscheinen.
-- Status: offen
+- Status: erledigt am 12.10.2026 (119 Tests grün; Bericht aus Beispielwoche und echten Daten geprüft; Version 0.3.0)
 - Zieltermin: 20.10.2026
 
 ## M6: Tagesbericht

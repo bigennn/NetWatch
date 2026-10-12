@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using NetWatch.App.Cli;
 using NetWatch.App.Network;
 using NetWatch.Core;
 using NetWatch.Core.Diagnostics;
@@ -21,8 +22,7 @@ internal static class DiagnoseCommand
 
     public static int Run(int durationSeconds)
     {
-        // Eine WinForms-App hat kein eigenes Konsolenfenster; wir nutzen das des aufrufenden Terminals.
-        AttachConsole(AttachParentProcess);
+        ParentConsole.Attach();
         return RunAsync(durationSeconds).GetAwaiter().GetResult();
     }
 
@@ -180,9 +180,4 @@ internal static class DiagnoseCommand
 
         return false;
     }
-
-    private const int AttachParentProcess = -1;
-
-    [DllImport("kernel32.dll")]
-    private static extern bool AttachConsole(int processId);
 }

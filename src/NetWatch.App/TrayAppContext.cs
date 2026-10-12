@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using NetWatch.App.Logging;
+using NetWatch.App.Reports;
 using NetWatch.Core;
 using NetWatch.Core.Detection;
 using NetWatch.Core.Logging;
@@ -38,6 +39,7 @@ internal sealed class TrayAppContext : ApplicationContext
         _icons = Enum.GetValues<ConnectionState>().ToDictionary(state => state, StatusIcon.Create);
 
         _menu = new ContextMenuStrip();
+        _menu.Items.Add("Wochenbericht öffnen", null, (_, _) => OpenWeeklyReport());
         _menu.Items.Add("Protokollordner öffnen", null, (_, _) => OpenLogFolder());
         _autostartItem = new ToolStripMenuItem("Autostart", null, (_, _) => ToggleAutostart());
         _menu.Items.Add(_autostartItem);
@@ -98,6 +100,33 @@ internal sealed class TrayAppContext : ApplicationContext
             _lastOutage,
             _host.Measurement.GatewayIgnoresPings,
             TimeZoneInfo.Local);
+
+    /// <summary>
+    /// Erzeugt report_week.html auf einem Hintergrund-Thread und öffnet sie im Standardbrowser.
+    /// Die laufende Messphase und ein laufender Aussetzer stehen noch nicht in den CSV-Dateien und werden mitgegeben.
+    /// </summary>
+    private void OpenWeeklyReport()
+    {
+        DateTimeOffset? sessionStart = _host.CurrentSessionStartUtc;
+        OutageStart? runningOutage = _runningOutage;
+        string output = Path.Combine(AppPaths.DataDirectory, WeeklyReportWriter.FileName);
+
+        Task.Run(() =>
+        {
+            try
+            {
+                WeeklyReportWriter.Write(AppPaths.DataDirectory, output, DateTimeOffset.UtcNow, sessionStart, runningOutage);
+                Process.Start(new ProcessStartInfo(output) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Write($"Wochenbericht: {ex}");
+                _ui.Post(
+                    _ => MessageBox.Show("Der Wochenbericht konnte nicht erstellt werden. Details stehen in netwatch_errors.log.", "NetWatch", MessageBoxButtons.OK, MessageBoxIcon.Warning),
+                    null);
+            }
+        });
+    }
 
     private static void OpenLogFolder()
     {

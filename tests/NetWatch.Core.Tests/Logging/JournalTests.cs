@@ -175,6 +175,31 @@ public class JournalTests
     }
 
     [Fact]
+    public void Session_lines_can_be_read_back()
+    {
+        _journal.SessionStarted(Noon, SessionReasons.Resume);
+        _journal.AddSessionNote(SessionNotes.GatewayIgnoresPing);
+        _journal.SessionEnded(Noon.AddHours(2), SessionReasons.Suspend);
+
+        Assert.True(SessionCsv.TryParseLine(_sessions.Lines.Single(), out Session? session));
+        Assert.Equal(Noon, session.StartUtc);
+        Assert.Equal(Noon.AddHours(2), session.EndUtc);
+        Assert.Equal(SessionReasons.Resume, session.StartReason);
+        Assert.Equal(SessionReasons.Suspend, session.EndReason);
+        Assert.Equal(new[] { SessionNotes.GatewayIgnoresPing }, session.Notes);
+    }
+
+    [Theory]
+    [InlineData(SessionCsv.Header)]
+    [InlineData("﻿" + SessionCsv.Header)]
+    [InlineData("")]
+    [InlineData("a;b;c")]
+    public void Session_header_and_broken_lines_are_not_read(string line)
+    {
+        Assert.False(SessionCsv.TryParseLine(line, out _));
+    }
+
+    [Fact]
     public void Tick_renews_the_heartbeat_once_per_minute()
     {
         _journal.SessionStarted(Noon, SessionReasons.Start);

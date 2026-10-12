@@ -30,9 +30,22 @@ internal sealed class NetWatchHost
 
     public MeasurementService Measurement => _measurement;
 
+    /// <summary>Beginn der laufenden Messphase (UTC); <c>null</c> im Standby. Für den Wochenbericht.</summary>
+    public DateTimeOffset? CurrentSessionStartUtc
+    {
+        get
+        {
+            long ticks = Interlocked.Read(ref _sessionStartTicks);
+            return ticks == 0 ? null : new DateTimeOffset(ticks, TimeSpan.Zero);
+        }
+    }
+
+    private long _sessionStartTicks;
+
     public void Start()
     {
         DateTimeOffset now = _clock.UtcNow;
+        Interlocked.Exchange(ref _sessionStartTicks, now.UtcTicks);
         _journal.Post(j => j.SessionStarted(now, SessionReasons.Start));
         SystemEvents.PowerModeChanged += OnPowerModeChanged;
         SystemEvents.SessionEnded += OnSessionEnded;
@@ -46,10 +59,12 @@ internal sealed class NetWatchHost
         {
             case PowerModes.Suspend:
                 _measurement.Suspend();
+                Interlocked.Exchange(ref _sessionStartTicks, 0);
                 _journal.Post(j => j.SessionEnded(now, SessionReasons.Suspend));
                 break;
 
             case PowerModes.Resume:
+                Interlocked.Exchange(ref _sessionStartTicks, now.UtcTicks);
                 _journal.Post(j => j.SessionStarted(now, SessionReasons.Resume));
                 _measurement.Resume();
                 break;

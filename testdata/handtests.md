@@ -18,3 +18,5 @@ Von Hand notierte Uhrzeiten zu den Handtests, zum Vergleich mit den erkannten Ze
 | 12.10.2026 | M4: F-07 Autostart an, Neustart (0.2.1) | – | `2026-10-12_m4_sessions_echt.csv` | NetWatch 21:32:08 von Windows gestartet (Shell-Core-Ereignis 9707); Phase davor endet 21:30:13 mit `shutdown` |
 | 12.10.2026 | M4: F-07 Autostart aus, Neustart | – | dto. | NetWatch nicht gestartet; Phase davor endet 21:36:35 mit `shutdown` |
 | 12.10.2026 | M4: Messstart (0.2.2, von Nils per Doppelklick, Autostart an) | 21:47:03 | – | läuft; `crash_detected` für 21:39:13 (von Claude hart beendete Instanz) |
+| 12.10.2026 | M5: Wochenbericht aus der erfundenen Beispielwoche (`--report-week … --bis 2026-10-12`) | – | `beispiel_woche_erfunden/report_week.html` | Muster 02:00 an 6 von 6 gemessenen Tagen, Messlücken grau, halbes Feld schraffiert; erster Sichttest fand den Mitternachtsfehler (leere Zeile 13.10.), behoben |
+| 12.10.2026 | M5: Wochenbericht aus echten Daten über das Tray-Menü (0.3.0) | 22:09 | – | 26 min 43 s gemessen seit 21:29, Lücken der Neustarts und des Updates sichtbar, keine Aussetzer; von Nils als passend bestätigt |

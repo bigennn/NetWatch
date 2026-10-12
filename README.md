@@ -12,6 +12,7 @@ NetWatch überwacht im Hintergrund deine Internetverbindung und schreibt jeden A
    - grau: noch keine gültige Messung, z. B. in den ersten Sekunden nach dem Start oder nach dem Aufwachen aus dem Standby
 4. Fährst du mit der Maus über das Symbol, siehst du, seit wann die Verbindung besteht und wann der letzte Aussetzer war (Uhrzeit, Dauer, Ursache).
 5. Rechtsklick auf das Symbol öffnet das Menü:
+   - **Wochenbericht öffnen:** zeigt die letzten sieben Tage im Browser als Raster Tag × Uhrzeit (Felder zu 15 Minuten). Rot = Aussetzer (je dunkler, desto länger), grün = gemessen ohne Aussetzer, grau = nicht gemessen. Unter dem Raster stehen die **wiederkehrenden Zeitfenster**, also Uhrzeiten mit Aussetzern an mehreren Tagen, zum Beispiel ein Router-Neustart um 02:00. Mit der Maus über einem Feld siehst du Uhrzeit, Dauer und Ursache.
    - **Protokollordner öffnen:** zeigt die Protokolldateien
    - **Autostart:** NetWatch startet mit Windows (standardmäßig aus). Lege die .exe *vorher* in ihren festen Ordner: Gespeichert wird der aktuelle Pfad. Verschiebst du die .exe später, schalte den Autostart einmal aus und wieder ein.
    - **Beenden**
@@ -44,6 +45,7 @@ Voraussetzung: Windows 10/11 und das .NET 10 SDK (zum Beispiel per `winget insta
 - Starten: `dotnet run --project src/NetWatch.App`
 - Tests: `dotnet test`
 - Diagnose (pingt Gateway, 1.1.1.1 und 8.8.8.8 im 200-ms-Takt und gibt eine Auswertung aus): `dotnet run --project src/NetWatch.App -- --diagnose 600`. Mit der veröffentlichten .exe: `.\NetWatch.exe --diagnose 600 | Out-Host`, damit PowerShell auf das Ende wartet. Der Bericht landet zusätzlich in `%LOCALAPPDATA%\NetWatch\diagnose_<Datum>_<Uhrzeit>.txt`.
+- Wochenbericht aus beliebigen Protokollen (z. B. von einem Teamkollegen, die laufende Messung wird nicht gestört): `.\NetWatch.exe --report-week <Ordner> [--bis JJJJ-MM-TT] [--aus <Datei.html>] | Out-Host`. Ohne `--bis` endet der Bericht jetzt, ohne `--aus` landet er als `report_week.html` im Ordner. Beispiel mit erfundenen Daten: `testdata\beispiel_woche_erfunden` mit `--bis 2026-10-12`.
 - Veröffentlichen als einzelne .exe: `dotnet publish src/NetWatch.App -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true`
 
 Details stehen in `docs/`, die Arbeitsregeln für Claude Code in `CLAUDE.md`.

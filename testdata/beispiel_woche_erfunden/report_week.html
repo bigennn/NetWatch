@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NetWatch – Wochenbericht</title>
+<style>
+body { font-family: "Segoe UI", system-ui, sans-serif; margin: 24px; color: #1f2328; background: #ffffff; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 28px 0 6px; }
+.meta, .hint, .note, footer { color: #59636e; font-size: 13px; }
+.note { color: #8a5a00; }
+.summary { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.figure { border: 1px solid #d1d9e0; border-radius: 6px; padding: 10px 14px; min-width: 170px; }
+.figure .label { font-size: 12px; color: #59636e; }
+.figure .value { font-size: 22px; font-weight: 600; margin: 2px 0; }
+.figure .detail { font-size: 12px; color: #59636e; }
+.grid { display: block; max-width: 100%; height: auto; }
+.grid text { font-size: 11px; fill: #1f2328; }
+.grid .hour { fill: #59636e; }
+.grid .tick { stroke: #ffffff; stroke-width: 1; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin-top: 8px; }
+.legend svg { vertical-align: -2px; }
+rect.measured { fill: #cdeccd; }
+rect.sev1 { fill: #f6b0b0; }
+rect.sev2 { fill: #e05a5a; }
+rect.sev3 { fill: #a30f0f; }
+rect.partial { fill: url(#hatch); }
+rect.notmeasured { fill: #d6d6d6; }
+rect.nonexistent { fill: #f0f0f0; }
+rect.future { fill: #ffffff; stroke: #e6e6e6; }
+rect:hover { stroke: #1f2328; stroke-width: 1.5; }
+table { border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid #d1d9e0; padding: 6px 12px; text-align: left; }
+th { font-weight: 600; }
+footer { margin-top: 32px; }
+</style>
+</head>
+<body>
+<h1>NetWatch – Wochenbericht</h1>
+<p class="meta">Zeitraum: Di 06.10.2026 bis Mo 12.10.2026 · Stand 13.10.2026 00:00 · alle Zeiten in Ortszeit</p>
+<div class="summary">
+<div class="figure"><div class="label">Messabdeckung</div><div class="value">93,2 %</div><div class="detail">6 d 12 h von 7 d 0 h</div></div>
+<div class="figure"><div class="label">Aussetzer</div><div class="value">11</div><div class="detail">Router 6 · Provider 4 · PC/LAN 1</div></div>
+<div class="figure"><div class="label">Gesamtdauer</div><div class="value">18 min 19 s</div><div class="detail">aller Aussetzer im Zeitraum</div></div>
+<div class="figure"><div class="label">Verfügbarkeit</div><div class="value">99,805 %</div><div class="detail">bezogen auf die gemessene Zeit</div></div>
+</div>
+<h2>Raster: Tag × Uhrzeit</h2>
+<p class="hint">Ein Feld = 15 Minuten. Fahre mit der Maus über ein Feld, um Uhrzeit, Dauer und Ursache der Aussetzer zu sehen.</p>
+<svg class="grid" role="img" aria-label="Wochenraster" viewBox="0 0 942 176" width="942" height="176">
+<defs><pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#d6d6d6"/><rect width="2" height="4" fill="#b7dfb7"/></pattern></defs>
+<text class="hour" x="78" y="14">00</text>
+<line class="tick" x1="78" y1="17" x2="78" y2="176"/>
+<text class="hour" x="114" y="14">01</text>
+<line class="tick" x1="114" y1="17" x2="114" y2="176"/>
+<text class="hour" x="150" y="14">02</text>
+<line class="tick" x1="150" y1="17" x2="150" y2="176"/>
+<text class="hour" x="186" y="14">03</text>
+<line class="tick" x1="186" y1="17" x2="186" y2="176"/>
+<text class="hour" x="222" y="14">04</text>
+<line class="tick" x1="222" y1="17" x2="222" y2="176"/>
+<text class="hour" x="258" y="14">05</text>
+<line class="tick" x1="258" y1="17" x2="258" y2="176"/>
+<text class="hour" x="294" y="14">06</text>
+<line class="tick" x1="294" y1="17" x2="294" y2="176"/>
+<text class="hour" x="330" y="14">07</text>
+<line class="tick" x1="330" y1="17" x2="330" y2="176"/>
+<text class="hour" x="366" y="14">08</text>
+<line class="tick" x1="366" y1="17" x2="366" y2="176"/>
+<text class="hour" x="402" y="14">09</text>
+<line class="tick" x1="402" y1="17" x2="402" y2="176"/>
+<text class="hour" x="438" y="14">10</text>
+<line class="tick" x1="438" y1="17" x2="438" y2="176"/>
+<text class="hour" x="474" y="14">11</text>
+<line class="tick" x1="474" y1="17" x2="474" y2="176"/>
+<text class="hour" x="510" y="14">12</text>
+<line class="tick" x1="510" y1="17" x2="510" y2="176"/>
+<text class="hour" x="546" y="14">13</text>
+<line class="tick" x1="546" y1="17" x2="546" y2="176"/>
+<text class="hour" x="582" y="14">14</text>
+<line class="tick" x1="582" y1="17" x2="582" y2="176"/>
+<text class="hour" x="618" y="14">15</text>
+<line class="tick" x1="618" y1="17" x2="618" y2="176"/>
+<text class="hour" x="654" y="14">16</text>
+<line class="tick" x1="654" y1="17" x2="654" y2="176"/>
+<text class="hour" x="690" y="14">17</text>
+<line class="tick" x1="690" y1="17" x2="690" y2="176"/>
+<text class="hour" x="726" y="14">18</text>
+<line class="tick" x1="726" y1="17" x2="726" y2="176"/>
+<text class="hour" x="762" y="14">19</text>
+<line class="tick" x1="762" y1="17" x2="762" y2="176"/>
+<text class="hour" x="798" y="14">20</text>
+<line class="tick" x1="798" y1="17" x2="798" y2="176"/>
+<text class="hour" x="834" y="14">21</text>
+<line class="tick" x1="834" y1="17" x2="834" y2="176"/>
+<text class="hour" x="870" y="14">22</text>
+<line class="tick" x1="870" y1="17" x2="870" y2="176"/>
+<text class="hour" x="906" y="14">23</text>
+<line class="tick" x1="906" y1="17" x2="906" y2="176"/>
+<text class="day" x="0" y="37">Di 06.10.</text>
+<rect class="measured" x="79" y="23" width="8" height="20"><title>Di 06.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="23" width="8" height="20"><title>Di 06.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="23" width="8" height="20"><title>Di 06.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="23" width="8" height="20"><title>Di 06.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="23" width="8" height="20"><title>Di 06.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="23" width="8" height="20"><title>Di 06.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="23" width="8" height="20"><title>Di 06.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="23" width="8" height="20"><title>Di 06.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="23" width="8" height="20"><title>Di 06.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 21 s · Router</title></rect>
+<rect class="measured" x="160" y="23" width="8" height="20"><title>Di 06.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="23" width="8" height="20"><title>Di 06.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="23" width="8" height="20"><title>Di 06.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="23" width="8" height="20"><title>Di 06.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="23" width="8" height="20"><title>Di 06.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="23" width="8" height="20"><title>Di 06.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="23" width="8" height="20"><title>Di 06.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="23" width="8" height="20"><title>Di 06.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="23" width="8" height="20"><title>Di 06.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="23" width="8" height="20"><title>Di 06.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="23" width="8" height="20"><title>Di 06.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="23" width="8" height="20"><title>Di 06.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="23" width="8" height="20"><title>Di 06.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="23" width="8" height="20"><title>Di 06.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="23" width="8" height="20"><title>Di 06.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="23" width="8" height="20"><title>Di 06.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="23" width="8" height="20"><title>Di 06.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="23" width="8" height="20"><title>Di 06.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="23" width="8" height="20"><title>Di 06.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="23" width="8" height="20"><title>Di 06.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="23" width="8" height="20"><title>Di 06.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="23" width="8" height="20"><title>Di 06.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="23" width="8" height="20"><title>Di 06.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="23" width="8" height="20"><title>Di 06.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="23" width="8" height="20"><title>Di 06.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="23" width="8" height="20"><title>Di 06.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="23" width="8" height="20"><title>Di 06.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="23" width="8" height="20"><title>Di 06.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="23" width="8" height="20"><title>Di 06.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="23" width="8" height="20"><title>Di 06.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="23" width="8" height="20"><title>Di 06.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="23" width="8" height="20"><title>Di 06.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="23" width="8" height="20"><title>Di 06.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="23" width="8" height="20"><title>Di 06.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="23" width="8" height="20"><title>Di 06.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="23" width="8" height="20"><title>Di 06.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="23" width="8" height="20"><title>Di 06.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="23" width="8" height="20"><title>Di 06.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="23" width="8" height="20"><title>Di 06.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="23" width="8" height="20"><title>Di 06.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="23" width="8" height="20"><title>Di 06.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="23" width="8" height="20"><title>Di 06.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="23" width="8" height="20"><title>Di 06.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="23" width="8" height="20"><title>Di 06.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="23" width="8" height="20"><title>Di 06.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="23" width="8" height="20"><title>Di 06.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="23" width="8" height="20"><title>Di 06.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="23" width="8" height="20"><title>Di 06.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="23" width="8" height="20"><title>Di 06.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="23" width="8" height="20"><title>Di 06.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="23" width="8" height="20"><title>Di 06.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="23" width="8" height="20"><title>Di 06.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="23" width="8" height="20"><title>Di 06.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="23" width="8" height="20"><title>Di 06.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="23" width="8" height="20"><title>Di 06.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="23" width="8" height="20"><title>Di 06.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="23" width="8" height="20"><title>Di 06.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="23" width="8" height="20"><title>Di 06.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="23" width="8" height="20"><title>Di 06.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="23" width="8" height="20"><title>Di 06.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="23" width="8" height="20"><title>Di 06.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="23" width="8" height="20"><title>Di 06.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="23" width="8" height="20"><title>Di 06.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="23" width="8" height="20"><title>Di 06.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="23" width="8" height="20"><title>Di 06.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="23" width="8" height="20"><title>Di 06.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="23" width="8" height="20"><title>Di 06.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="23" width="8" height="20"><title>Di 06.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="23" width="8" height="20"><title>Di 06.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="23" width="8" height="20"><title>Di 06.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="23" width="8" height="20"><title>Di 06.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="23" width="8" height="20"><title>Di 06.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="23" width="8" height="20"><title>Di 06.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="23" width="8" height="20"><title>Di 06.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="23" width="8" height="20"><title>Di 06.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="835" y="23" width="8" height="20"><title>Di 06.10. 21:00–21:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="844" y="23" width="8" height="20"><title>Di 06.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="23" width="8" height="20"><title>Di 06.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="23" width="8" height="20"><title>Di 06.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="23" width="8" height="20"><title>Di 06.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="23" width="8" height="20"><title>Di 06.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="23" width="8" height="20"><title>Di 06.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="23" width="8" height="20"><title>Di 06.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="23" width="8" height="20"><title>Di 06.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="23" width="8" height="20"><title>Di 06.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="23" width="8" height="20"><title>Di 06.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="23" width="8" height="20"><title>Di 06.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+<text class="day" x="0" y="59">Mi 07.10.</text>
+<rect class="measured" x="79" y="45" width="8" height="20"><title>Mi 07.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="45" width="8" height="20"><title>Mi 07.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="45" width="8" height="20"><title>Mi 07.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="45" width="8" height="20"><title>Mi 07.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="45" width="8" height="20"><title>Mi 07.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="45" width="8" height="20"><title>Mi 07.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="45" width="8" height="20"><title>Mi 07.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="45" width="8" height="20"><title>Mi 07.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="45" width="8" height="20"><title>Mi 07.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 19 s · Router</title></rect>
+<rect class="measured" x="160" y="45" width="8" height="20"><title>Mi 07.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="45" width="8" height="20"><title>Mi 07.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="45" width="8" height="20"><title>Mi 07.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="45" width="8" height="20"><title>Mi 07.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="45" width="8" height="20"><title>Mi 07.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="45" width="8" height="20"><title>Mi 07.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="45" width="8" height="20"><title>Mi 07.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="45" width="8" height="20"><title>Mi 07.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="45" width="8" height="20"><title>Mi 07.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="45" width="8" height="20"><title>Mi 07.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="45" width="8" height="20"><title>Mi 07.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="45" width="8" height="20"><title>Mi 07.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="45" width="8" height="20"><title>Mi 07.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="45" width="8" height="20"><title>Mi 07.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="45" width="8" height="20"><title>Mi 07.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="45" width="8" height="20"><title>Mi 07.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="45" width="8" height="20"><title>Mi 07.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="45" width="8" height="20"><title>Mi 07.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="45" width="8" height="20"><title>Mi 07.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="45" width="8" height="20"><title>Mi 07.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="45" width="8" height="20"><title>Mi 07.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="45" width="8" height="20"><title>Mi 07.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="45" width="8" height="20"><title>Mi 07.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="45" width="8" height="20"><title>Mi 07.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="45" width="8" height="20"><title>Mi 07.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="45" width="8" height="20"><title>Mi 07.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="45" width="8" height="20"><title>Mi 07.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="45" width="8" height="20"><title>Mi 07.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="45" width="8" height="20"><title>Mi 07.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="45" width="8" height="20"><title>Mi 07.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="45" width="8" height="20"><title>Mi 07.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="45" width="8" height="20"><title>Mi 07.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="45" width="8" height="20"><title>Mi 07.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="45" width="8" height="20"><title>Mi 07.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="45" width="8" height="20"><title>Mi 07.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="45" width="8" height="20"><title>Mi 07.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="45" width="8" height="20"><title>Mi 07.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="45" width="8" height="20"><title>Mi 07.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="45" width="8" height="20"><title>Mi 07.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="45" width="8" height="20"><title>Mi 07.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="45" width="8" height="20"><title>Mi 07.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="45" width="8" height="20"><title>Mi 07.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="45" width="8" height="20"><title>Mi 07.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="45" width="8" height="20"><title>Mi 07.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="45" width="8" height="20"><title>Mi 07.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="45" width="8" height="20"><title>Mi 07.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="45" width="8" height="20"><title>Mi 07.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="45" width="8" height="20"><title>Mi 07.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="45" width="8" height="20"><title>Mi 07.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="sev1" x="601" y="45" width="8" height="20"><title>Mi 07.10. 14:30–14:45
+gemessen: 100 %
+14:38:12 · 0,6 s · PC/LAN</title></rect>
+<rect class="measured" x="610" y="45" width="8" height="20"><title>Mi 07.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="45" width="8" height="20"><title>Mi 07.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="45" width="8" height="20"><title>Mi 07.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="45" width="8" height="20"><title>Mi 07.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="45" width="8" height="20"><title>Mi 07.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="45" width="8" height="20"><title>Mi 07.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="45" width="8" height="20"><title>Mi 07.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="45" width="8" height="20"><title>Mi 07.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="45" width="8" height="20"><title>Mi 07.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="45" width="8" height="20"><title>Mi 07.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="45" width="8" height="20"><title>Mi 07.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="45" width="8" height="20"><title>Mi 07.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="45" width="8" height="20"><title>Mi 07.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="45" width="8" height="20"><title>Mi 07.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="45" width="8" height="20"><title>Mi 07.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="45" width="8" height="20"><title>Mi 07.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="45" width="8" height="20"><title>Mi 07.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="45" width="8" height="20"><title>Mi 07.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="45" width="8" height="20"><title>Mi 07.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="45" width="8" height="20"><title>Mi 07.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="45" width="8" height="20"><title>Mi 07.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="45" width="8" height="20"><title>Mi 07.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="45" width="8" height="20"><title>Mi 07.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="45" width="8" height="20"><title>Mi 07.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="45" width="8" height="20"><title>Mi 07.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="835" y="45" width="8" height="20"><title>Mi 07.10. 21:00–21:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="844" y="45" width="8" height="20"><title>Mi 07.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="45" width="8" height="20"><title>Mi 07.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="45" width="8" height="20"><title>Mi 07.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="45" width="8" height="20"><title>Mi 07.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="45" width="8" height="20"><title>Mi 07.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="45" width="8" height="20"><title>Mi 07.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="45" width="8" height="20"><title>Mi 07.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="45" width="8" height="20"><title>Mi 07.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="45" width="8" height="20"><title>Mi 07.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="45" width="8" height="20"><title>Mi 07.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="45" width="8" height="20"><title>Mi 07.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+<text class="day" x="0" y="81">Do 08.10.</text>
+<rect class="measured" x="79" y="67" width="8" height="20"><title>Do 08.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="67" width="8" height="20"><title>Do 08.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="67" width="8" height="20"><title>Do 08.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="67" width="8" height="20"><title>Do 08.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="67" width="8" height="20"><title>Do 08.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="67" width="8" height="20"><title>Do 08.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="67" width="8" height="20"><title>Do 08.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="67" width="8" height="20"><title>Do 08.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="67" width="8" height="20"><title>Do 08.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 24 s · Router</title></rect>
+<rect class="measured" x="160" y="67" width="8" height="20"><title>Do 08.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="67" width="8" height="20"><title>Do 08.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="67" width="8" height="20"><title>Do 08.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="67" width="8" height="20"><title>Do 08.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="67" width="8" height="20"><title>Do 08.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="67" width="8" height="20"><title>Do 08.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="67" width="8" height="20"><title>Do 08.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="67" width="8" height="20"><title>Do 08.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="67" width="8" height="20"><title>Do 08.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="67" width="8" height="20"><title>Do 08.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="67" width="8" height="20"><title>Do 08.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="67" width="8" height="20"><title>Do 08.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="67" width="8" height="20"><title>Do 08.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="67" width="8" height="20"><title>Do 08.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="67" width="8" height="20"><title>Do 08.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="67" width="8" height="20"><title>Do 08.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="67" width="8" height="20"><title>Do 08.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="67" width="8" height="20"><title>Do 08.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="67" width="8" height="20"><title>Do 08.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="67" width="8" height="20"><title>Do 08.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="67" width="8" height="20"><title>Do 08.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="67" width="8" height="20"><title>Do 08.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="67" width="8" height="20"><title>Do 08.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="67" width="8" height="20"><title>Do 08.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="67" width="8" height="20"><title>Do 08.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="67" width="8" height="20"><title>Do 08.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="67" width="8" height="20"><title>Do 08.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="67" width="8" height="20"><title>Do 08.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="67" width="8" height="20"><title>Do 08.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="67" width="8" height="20"><title>Do 08.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="67" width="8" height="20"><title>Do 08.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="67" width="8" height="20"><title>Do 08.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="67" width="8" height="20"><title>Do 08.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="67" width="8" height="20"><title>Do 08.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="67" width="8" height="20"><title>Do 08.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="67" width="8" height="20"><title>Do 08.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="67" width="8" height="20"><title>Do 08.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="67" width="8" height="20"><title>Do 08.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="67" width="8" height="20"><title>Do 08.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="67" width="8" height="20"><title>Do 08.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="67" width="8" height="20"><title>Do 08.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="67" width="8" height="20"><title>Do 08.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="67" width="8" height="20"><title>Do 08.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="67" width="8" height="20"><title>Do 08.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="67" width="8" height="20"><title>Do 08.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="67" width="8" height="20"><title>Do 08.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="67" width="8" height="20"><title>Do 08.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="67" width="8" height="20"><title>Do 08.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="67" width="8" height="20"><title>Do 08.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="67" width="8" height="20"><title>Do 08.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="67" width="8" height="20"><title>Do 08.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="67" width="8" height="20"><title>Do 08.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="67" width="8" height="20"><title>Do 08.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="67" width="8" height="20"><title>Do 08.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="67" width="8" height="20"><title>Do 08.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="67" width="8" height="20"><title>Do 08.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="67" width="8" height="20"><title>Do 08.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="67" width="8" height="20"><title>Do 08.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="67" width="8" height="20"><title>Do 08.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="67" width="8" height="20"><title>Do 08.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="67" width="8" height="20"><title>Do 08.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="67" width="8" height="20"><title>Do 08.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="67" width="8" height="20"><title>Do 08.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="67" width="8" height="20"><title>Do 08.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="67" width="8" height="20"><title>Do 08.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="67" width="8" height="20"><title>Do 08.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="67" width="8" height="20"><title>Do 08.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="67" width="8" height="20"><title>Do 08.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="67" width="8" height="20"><title>Do 08.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="67" width="8" height="20"><title>Do 08.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="67" width="8" height="20"><title>Do 08.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="67" width="8" height="20"><title>Do 08.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="67" width="8" height="20"><title>Do 08.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="67" width="8" height="20"><title>Do 08.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="67" width="8" height="20"><title>Do 08.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="sev1" x="835" y="67" width="8" height="20"><title>Do 08.10. 21:00–21:15
+gemessen: 100 %
+21:05:12 · 0,4 s · Provider</title></rect>
+<rect class="measured" x="844" y="67" width="8" height="20"><title>Do 08.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="67" width="8" height="20"><title>Do 08.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="67" width="8" height="20"><title>Do 08.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="67" width="8" height="20"><title>Do 08.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="67" width="8" height="20"><title>Do 08.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="67" width="8" height="20"><title>Do 08.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="67" width="8" height="20"><title>Do 08.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="67" width="8" height="20"><title>Do 08.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="67" width="8" height="20"><title>Do 08.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="67" width="8" height="20"><title>Do 08.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="67" width="8" height="20"><title>Do 08.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+<text class="day" x="0" y="103">Fr 09.10.</text>
+<rect class="measured" x="79" y="89" width="8" height="20"><title>Fr 09.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="89" width="8" height="20"><title>Fr 09.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="89" width="8" height="20"><title>Fr 09.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="89" width="8" height="20"><title>Fr 09.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="89" width="8" height="20"><title>Fr 09.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="89" width="8" height="20"><title>Fr 09.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="89" width="8" height="20"><title>Fr 09.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="89" width="8" height="20"><title>Fr 09.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="89" width="8" height="20"><title>Fr 09.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 20 s · Router</title></rect>
+<rect class="measured" x="160" y="89" width="8" height="20"><title>Fr 09.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="89" width="8" height="20"><title>Fr 09.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="89" width="8" height="20"><title>Fr 09.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="89" width="8" height="20"><title>Fr 09.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="89" width="8" height="20"><title>Fr 09.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="89" width="8" height="20"><title>Fr 09.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="89" width="8" height="20"><title>Fr 09.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="89" width="8" height="20"><title>Fr 09.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="89" width="8" height="20"><title>Fr 09.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="89" width="8" height="20"><title>Fr 09.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="89" width="8" height="20"><title>Fr 09.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="89" width="8" height="20"><title>Fr 09.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="89" width="8" height="20"><title>Fr 09.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="89" width="8" height="20"><title>Fr 09.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="89" width="8" height="20"><title>Fr 09.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="89" width="8" height="20"><title>Fr 09.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="89" width="8" height="20"><title>Fr 09.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="89" width="8" height="20"><title>Fr 09.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="89" width="8" height="20"><title>Fr 09.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="89" width="8" height="20"><title>Fr 09.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="89" width="8" height="20"><title>Fr 09.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="89" width="8" height="20"><title>Fr 09.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="89" width="8" height="20"><title>Fr 09.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="89" width="8" height="20"><title>Fr 09.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="89" width="8" height="20"><title>Fr 09.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="89" width="8" height="20"><title>Fr 09.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="89" width="8" height="20"><title>Fr 09.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="89" width="8" height="20"><title>Fr 09.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="89" width="8" height="20"><title>Fr 09.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="89" width="8" height="20"><title>Fr 09.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="89" width="8" height="20"><title>Fr 09.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="partial" x="439" y="89" width="8" height="20"><title>Fr 09.10. 10:00–10:15
+gemessen: 50 %</title></rect>
+<rect class="notmeasured" x="448" y="89" width="8" height="20"><title>Fr 09.10. 10:15–10:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="457" y="89" width="8" height="20"><title>Fr 09.10. 10:30–10:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="466" y="89" width="8" height="20"><title>Fr 09.10. 10:45–11:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="475" y="89" width="8" height="20"><title>Fr 09.10. 11:00–11:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="484" y="89" width="8" height="20"><title>Fr 09.10. 11:15–11:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="493" y="89" width="8" height="20"><title>Fr 09.10. 11:30–11:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="502" y="89" width="8" height="20"><title>Fr 09.10. 11:45–12:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="511" y="89" width="8" height="20"><title>Fr 09.10. 12:00–12:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="520" y="89" width="8" height="20"><title>Fr 09.10. 12:15–12:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="529" y="89" width="8" height="20"><title>Fr 09.10. 12:30–12:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="538" y="89" width="8" height="20"><title>Fr 09.10. 12:45–13:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="547" y="89" width="8" height="20"><title>Fr 09.10. 13:00–13:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="556" y="89" width="8" height="20"><title>Fr 09.10. 13:15–13:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="565" y="89" width="8" height="20"><title>Fr 09.10. 13:30–13:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="574" y="89" width="8" height="20"><title>Fr 09.10. 13:45–14:00
+nicht gemessen</title></rect>
+<rect class="measured" x="583" y="89" width="8" height="20"><title>Fr 09.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="89" width="8" height="20"><title>Fr 09.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="89" width="8" height="20"><title>Fr 09.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="89" width="8" height="20"><title>Fr 09.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="89" width="8" height="20"><title>Fr 09.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="89" width="8" height="20"><title>Fr 09.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="89" width="8" height="20"><title>Fr 09.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="89" width="8" height="20"><title>Fr 09.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="89" width="8" height="20"><title>Fr 09.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="89" width="8" height="20"><title>Fr 09.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="89" width="8" height="20"><title>Fr 09.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="89" width="8" height="20"><title>Fr 09.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="89" width="8" height="20"><title>Fr 09.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="89" width="8" height="20"><title>Fr 09.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="89" width="8" height="20"><title>Fr 09.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="89" width="8" height="20"><title>Fr 09.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="89" width="8" height="20"><title>Fr 09.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="89" width="8" height="20"><title>Fr 09.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="89" width="8" height="20"><title>Fr 09.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="89" width="8" height="20"><title>Fr 09.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="89" width="8" height="20"><title>Fr 09.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="89" width="8" height="20"><title>Fr 09.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="89" width="8" height="20"><title>Fr 09.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="89" width="8" height="20"><title>Fr 09.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="89" width="8" height="20"><title>Fr 09.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="89" width="8" height="20"><title>Fr 09.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="89" width="8" height="20"><title>Fr 09.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="89" width="8" height="20"><title>Fr 09.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="835" y="89" width="8" height="20"><title>Fr 09.10. 21:00–21:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="844" y="89" width="8" height="20"><title>Fr 09.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="89" width="8" height="20"><title>Fr 09.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="89" width="8" height="20"><title>Fr 09.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="89" width="8" height="20"><title>Fr 09.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="89" width="8" height="20"><title>Fr 09.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="89" width="8" height="20"><title>Fr 09.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="89" width="8" height="20"><title>Fr 09.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="89" width="8" height="20"><title>Fr 09.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="89" width="8" height="20"><title>Fr 09.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="89" width="8" height="20"><title>Fr 09.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="89" width="8" height="20"><title>Fr 09.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+<text class="day" x="0" y="125">Sa 10.10.</text>
+<rect class="measured" x="79" y="111" width="8" height="20"><title>Sa 10.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="111" width="8" height="20"><title>Sa 10.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="111" width="8" height="20"><title>Sa 10.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="111" width="8" height="20"><title>Sa 10.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="111" width="8" height="20"><title>Sa 10.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="111" width="8" height="20"><title>Sa 10.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="111" width="8" height="20"><title>Sa 10.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="111" width="8" height="20"><title>Sa 10.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="111" width="8" height="20"><title>Sa 10.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 20 s · Router</title></rect>
+<rect class="measured" x="160" y="111" width="8" height="20"><title>Sa 10.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="111" width="8" height="20"><title>Sa 10.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="111" width="8" height="20"><title>Sa 10.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="111" width="8" height="20"><title>Sa 10.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="111" width="8" height="20"><title>Sa 10.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="111" width="8" height="20"><title>Sa 10.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="111" width="8" height="20"><title>Sa 10.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="111" width="8" height="20"><title>Sa 10.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="111" width="8" height="20"><title>Sa 10.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="111" width="8" height="20"><title>Sa 10.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="111" width="8" height="20"><title>Sa 10.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="111" width="8" height="20"><title>Sa 10.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="111" width="8" height="20"><title>Sa 10.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="111" width="8" height="20"><title>Sa 10.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="111" width="8" height="20"><title>Sa 10.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="111" width="8" height="20"><title>Sa 10.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="111" width="8" height="20"><title>Sa 10.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="111" width="8" height="20"><title>Sa 10.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="111" width="8" height="20"><title>Sa 10.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="111" width="8" height="20"><title>Sa 10.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="111" width="8" height="20"><title>Sa 10.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="111" width="8" height="20"><title>Sa 10.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="111" width="8" height="20"><title>Sa 10.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="111" width="8" height="20"><title>Sa 10.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="111" width="8" height="20"><title>Sa 10.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="111" width="8" height="20"><title>Sa 10.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="111" width="8" height="20"><title>Sa 10.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="111" width="8" height="20"><title>Sa 10.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="111" width="8" height="20"><title>Sa 10.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="111" width="8" height="20"><title>Sa 10.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="111" width="8" height="20"><title>Sa 10.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="111" width="8" height="20"><title>Sa 10.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="111" width="8" height="20"><title>Sa 10.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="111" width="8" height="20"><title>Sa 10.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="111" width="8" height="20"><title>Sa 10.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="111" width="8" height="20"><title>Sa 10.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="111" width="8" height="20"><title>Sa 10.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="111" width="8" height="20"><title>Sa 10.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="111" width="8" height="20"><title>Sa 10.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="111" width="8" height="20"><title>Sa 10.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="111" width="8" height="20"><title>Sa 10.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="111" width="8" height="20"><title>Sa 10.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="111" width="8" height="20"><title>Sa 10.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="111" width="8" height="20"><title>Sa 10.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="111" width="8" height="20"><title>Sa 10.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="111" width="8" height="20"><title>Sa 10.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="111" width="8" height="20"><title>Sa 10.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="111" width="8" height="20"><title>Sa 10.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="111" width="8" height="20"><title>Sa 10.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="111" width="8" height="20"><title>Sa 10.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="111" width="8" height="20"><title>Sa 10.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="111" width="8" height="20"><title>Sa 10.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="111" width="8" height="20"><title>Sa 10.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="111" width="8" height="20"><title>Sa 10.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="111" width="8" height="20"><title>Sa 10.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="111" width="8" height="20"><title>Sa 10.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="111" width="8" height="20"><title>Sa 10.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="111" width="8" height="20"><title>Sa 10.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="111" width="8" height="20"><title>Sa 10.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="111" width="8" height="20"><title>Sa 10.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="111" width="8" height="20"><title>Sa 10.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="111" width="8" height="20"><title>Sa 10.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="111" width="8" height="20"><title>Sa 10.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="111" width="8" height="20"><title>Sa 10.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="111" width="8" height="20"><title>Sa 10.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="111" width="8" height="20"><title>Sa 10.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="111" width="8" height="20"><title>Sa 10.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="763" y="111" width="8" height="20"><title>Sa 10.10. 19:00–19:15
+gemessen: 100 %
+19:12:30 · 4 min 5 s · Provider</title></rect>
+<rect class="sev3" x="772" y="111" width="8" height="20"><title>Sa 10.10. 19:15–19:30
+gemessen: 100 %
+19:12:30 · 4 min 5 s · Provider</title></rect>
+<rect class="measured" x="781" y="111" width="8" height="20"><title>Sa 10.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="111" width="8" height="20"><title>Sa 10.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="111" width="8" height="20"><title>Sa 10.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="111" width="8" height="20"><title>Sa 10.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="111" width="8" height="20"><title>Sa 10.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="111" width="8" height="20"><title>Sa 10.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="835" y="111" width="8" height="20"><title>Sa 10.10. 21:00–21:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="844" y="111" width="8" height="20"><title>Sa 10.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="111" width="8" height="20"><title>Sa 10.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="111" width="8" height="20"><title>Sa 10.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="111" width="8" height="20"><title>Sa 10.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="111" width="8" height="20"><title>Sa 10.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="111" width="8" height="20"><title>Sa 10.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="111" width="8" height="20"><title>Sa 10.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="111" width="8" height="20"><title>Sa 10.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="111" width="8" height="20"><title>Sa 10.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="111" width="8" height="20"><title>Sa 10.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="111" width="8" height="20"><title>Sa 10.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+<text class="day" x="0" y="147">So 11.10.</text>
+<rect class="measured" x="79" y="133" width="8" height="20"><title>So 11.10. 00:00–00:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="88" y="133" width="8" height="20"><title>So 11.10. 00:15–00:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="97" y="133" width="8" height="20"><title>So 11.10. 00:30–00:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="106" y="133" width="8" height="20"><title>So 11.10. 00:45–01:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="115" y="133" width="8" height="20"><title>So 11.10. 01:00–01:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="124" y="133" width="8" height="20"><title>So 11.10. 01:15–01:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="133" y="133" width="8" height="20"><title>So 11.10. 01:30–01:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="142" y="133" width="8" height="20"><title>So 11.10. 01:45–02:00
+gemessen: 100 %</title></rect>
+<rect class="sev3" x="151" y="133" width="8" height="20"><title>So 11.10. 02:00–02:15
+gemessen: 100 %
+02:00:03 · 2 min 22 s · Router</title></rect>
+<rect class="measured" x="160" y="133" width="8" height="20"><title>So 11.10. 02:15–02:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="169" y="133" width="8" height="20"><title>So 11.10. 02:30–02:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="178" y="133" width="8" height="20"><title>So 11.10. 02:45–03:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="187" y="133" width="8" height="20"><title>So 11.10. 03:00–03:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="196" y="133" width="8" height="20"><title>So 11.10. 03:15–03:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="205" y="133" width="8" height="20"><title>So 11.10. 03:30–03:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="214" y="133" width="8" height="20"><title>So 11.10. 03:45–04:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="223" y="133" width="8" height="20"><title>So 11.10. 04:00–04:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="232" y="133" width="8" height="20"><title>So 11.10. 04:15–04:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="241" y="133" width="8" height="20"><title>So 11.10. 04:30–04:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="250" y="133" width="8" height="20"><title>So 11.10. 04:45–05:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="259" y="133" width="8" height="20"><title>So 11.10. 05:00–05:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="268" y="133" width="8" height="20"><title>So 11.10. 05:15–05:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="277" y="133" width="8" height="20"><title>So 11.10. 05:30–05:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="286" y="133" width="8" height="20"><title>So 11.10. 05:45–06:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="295" y="133" width="8" height="20"><title>So 11.10. 06:00–06:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="304" y="133" width="8" height="20"><title>So 11.10. 06:15–06:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="313" y="133" width="8" height="20"><title>So 11.10. 06:30–06:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="322" y="133" width="8" height="20"><title>So 11.10. 06:45–07:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="331" y="133" width="8" height="20"><title>So 11.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="133" width="8" height="20"><title>So 11.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="133" width="8" height="20"><title>So 11.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="133" width="8" height="20"><title>So 11.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="133" width="8" height="20"><title>So 11.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="133" width="8" height="20"><title>So 11.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="133" width="8" height="20"><title>So 11.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="133" width="8" height="20"><title>So 11.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="133" width="8" height="20"><title>So 11.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="133" width="8" height="20"><title>So 11.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="133" width="8" height="20"><title>So 11.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="133" width="8" height="20"><title>So 11.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="133" width="8" height="20"><title>So 11.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="133" width="8" height="20"><title>So 11.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="133" width="8" height="20"><title>So 11.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="133" width="8" height="20"><title>So 11.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="133" width="8" height="20"><title>So 11.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="133" width="8" height="20"><title>So 11.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="133" width="8" height="20"><title>So 11.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="133" width="8" height="20"><title>So 11.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="133" width="8" height="20"><title>So 11.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="133" width="8" height="20"><title>So 11.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="133" width="8" height="20"><title>So 11.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="133" width="8" height="20"><title>So 11.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="133" width="8" height="20"><title>So 11.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="133" width="8" height="20"><title>So 11.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="133" width="8" height="20"><title>So 11.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="133" width="8" height="20"><title>So 11.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="133" width="8" height="20"><title>So 11.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="133" width="8" height="20"><title>So 11.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="133" width="8" height="20"><title>So 11.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="133" width="8" height="20"><title>So 11.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="133" width="8" height="20"><title>So 11.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="133" width="8" height="20"><title>So 11.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="133" width="8" height="20"><title>So 11.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="133" width="8" height="20"><title>So 11.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="133" width="8" height="20"><title>So 11.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="133" width="8" height="20"><title>So 11.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="133" width="8" height="20"><title>So 11.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="133" width="8" height="20"><title>So 11.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="133" width="8" height="20"><title>So 11.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="133" width="8" height="20"><title>So 11.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="133" width="8" height="20"><title>So 11.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="133" width="8" height="20"><title>So 11.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="133" width="8" height="20"><title>So 11.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="133" width="8" height="20"><title>So 11.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="745" y="133" width="8" height="20"><title>So 11.10. 18:30–18:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="754" y="133" width="8" height="20"><title>So 11.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="133" width="8" height="20"><title>So 11.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="133" width="8" height="20"><title>So 11.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="133" width="8" height="20"><title>So 11.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="133" width="8" height="20"><title>So 11.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="133" width="8" height="20"><title>So 11.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="133" width="8" height="20"><title>So 11.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="133" width="8" height="20"><title>So 11.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="133" width="8" height="20"><title>So 11.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="sev1" x="835" y="133" width="8" height="20"><title>So 11.10. 21:00–21:15
+gemessen: 100 %
+21:05:40 · 0,8 s · Provider</title></rect>
+<rect class="measured" x="844" y="133" width="8" height="20"><title>So 11.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="133" width="8" height="20"><title>So 11.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="133" width="8" height="20"><title>So 11.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="133" width="8" height="20"><title>So 11.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="133" width="8" height="20"><title>So 11.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="133" width="8" height="20"><title>So 11.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="133" width="8" height="20"><title>So 11.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="133" width="8" height="20"><title>So 11.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="133" width="8" height="20"><title>So 11.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="notmeasured" x="925" y="133" width="8" height="20"><title>So 11.10. 23:30–23:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="934" y="133" width="8" height="20"><title>So 11.10. 23:45–24:00
+nicht gemessen</title></rect>
+<text class="day" x="0" y="169">Mo 12.10.</text>
+<rect class="notmeasured" x="79" y="155" width="8" height="20"><title>Mo 12.10. 00:00–00:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="88" y="155" width="8" height="20"><title>Mo 12.10. 00:15–00:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="97" y="155" width="8" height="20"><title>Mo 12.10. 00:30–00:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="106" y="155" width="8" height="20"><title>Mo 12.10. 00:45–01:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="115" y="155" width="8" height="20"><title>Mo 12.10. 01:00–01:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="124" y="155" width="8" height="20"><title>Mo 12.10. 01:15–01:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="133" y="155" width="8" height="20"><title>Mo 12.10. 01:30–01:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="142" y="155" width="8" height="20"><title>Mo 12.10. 01:45–02:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="151" y="155" width="8" height="20"><title>Mo 12.10. 02:00–02:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="160" y="155" width="8" height="20"><title>Mo 12.10. 02:15–02:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="169" y="155" width="8" height="20"><title>Mo 12.10. 02:30–02:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="178" y="155" width="8" height="20"><title>Mo 12.10. 02:45–03:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="187" y="155" width="8" height="20"><title>Mo 12.10. 03:00–03:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="196" y="155" width="8" height="20"><title>Mo 12.10. 03:15–03:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="205" y="155" width="8" height="20"><title>Mo 12.10. 03:30–03:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="214" y="155" width="8" height="20"><title>Mo 12.10. 03:45–04:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="223" y="155" width="8" height="20"><title>Mo 12.10. 04:00–04:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="232" y="155" width="8" height="20"><title>Mo 12.10. 04:15–04:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="241" y="155" width="8" height="20"><title>Mo 12.10. 04:30–04:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="250" y="155" width="8" height="20"><title>Mo 12.10. 04:45–05:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="259" y="155" width="8" height="20"><title>Mo 12.10. 05:00–05:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="268" y="155" width="8" height="20"><title>Mo 12.10. 05:15–05:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="277" y="155" width="8" height="20"><title>Mo 12.10. 05:30–05:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="286" y="155" width="8" height="20"><title>Mo 12.10. 05:45–06:00
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="295" y="155" width="8" height="20"><title>Mo 12.10. 06:00–06:15
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="304" y="155" width="8" height="20"><title>Mo 12.10. 06:15–06:30
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="313" y="155" width="8" height="20"><title>Mo 12.10. 06:30–06:45
+nicht gemessen</title></rect>
+<rect class="notmeasured" x="322" y="155" width="8" height="20"><title>Mo 12.10. 06:45–07:00
+nicht gemessen</title></rect>
+<rect class="measured" x="331" y="155" width="8" height="20"><title>Mo 12.10. 07:00–07:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="340" y="155" width="8" height="20"><title>Mo 12.10. 07:15–07:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="349" y="155" width="8" height="20"><title>Mo 12.10. 07:30–07:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="358" y="155" width="8" height="20"><title>Mo 12.10. 07:45–08:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="367" y="155" width="8" height="20"><title>Mo 12.10. 08:00–08:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="376" y="155" width="8" height="20"><title>Mo 12.10. 08:15–08:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="385" y="155" width="8" height="20"><title>Mo 12.10. 08:30–08:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="394" y="155" width="8" height="20"><title>Mo 12.10. 08:45–09:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="403" y="155" width="8" height="20"><title>Mo 12.10. 09:00–09:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="412" y="155" width="8" height="20"><title>Mo 12.10. 09:15–09:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="421" y="155" width="8" height="20"><title>Mo 12.10. 09:30–09:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="430" y="155" width="8" height="20"><title>Mo 12.10. 09:45–10:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="439" y="155" width="8" height="20"><title>Mo 12.10. 10:00–10:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="448" y="155" width="8" height="20"><title>Mo 12.10. 10:15–10:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="457" y="155" width="8" height="20"><title>Mo 12.10. 10:30–10:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="466" y="155" width="8" height="20"><title>Mo 12.10. 10:45–11:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="475" y="155" width="8" height="20"><title>Mo 12.10. 11:00–11:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="484" y="155" width="8" height="20"><title>Mo 12.10. 11:15–11:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="493" y="155" width="8" height="20"><title>Mo 12.10. 11:30–11:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="502" y="155" width="8" height="20"><title>Mo 12.10. 11:45–12:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="511" y="155" width="8" height="20"><title>Mo 12.10. 12:00–12:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="520" y="155" width="8" height="20"><title>Mo 12.10. 12:15–12:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="529" y="155" width="8" height="20"><title>Mo 12.10. 12:30–12:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="538" y="155" width="8" height="20"><title>Mo 12.10. 12:45–13:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="547" y="155" width="8" height="20"><title>Mo 12.10. 13:00–13:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="556" y="155" width="8" height="20"><title>Mo 12.10. 13:15–13:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="565" y="155" width="8" height="20"><title>Mo 12.10. 13:30–13:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="574" y="155" width="8" height="20"><title>Mo 12.10. 13:45–14:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="583" y="155" width="8" height="20"><title>Mo 12.10. 14:00–14:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="592" y="155" width="8" height="20"><title>Mo 12.10. 14:15–14:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="601" y="155" width="8" height="20"><title>Mo 12.10. 14:30–14:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="610" y="155" width="8" height="20"><title>Mo 12.10. 14:45–15:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="619" y="155" width="8" height="20"><title>Mo 12.10. 15:00–15:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="628" y="155" width="8" height="20"><title>Mo 12.10. 15:15–15:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="637" y="155" width="8" height="20"><title>Mo 12.10. 15:30–15:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="646" y="155" width="8" height="20"><title>Mo 12.10. 15:45–16:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="655" y="155" width="8" height="20"><title>Mo 12.10. 16:00–16:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="664" y="155" width="8" height="20"><title>Mo 12.10. 16:15–16:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="673" y="155" width="8" height="20"><title>Mo 12.10. 16:30–16:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="682" y="155" width="8" height="20"><title>Mo 12.10. 16:45–17:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="691" y="155" width="8" height="20"><title>Mo 12.10. 17:00–17:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="700" y="155" width="8" height="20"><title>Mo 12.10. 17:15–17:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="709" y="155" width="8" height="20"><title>Mo 12.10. 17:30–17:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="718" y="155" width="8" height="20"><title>Mo 12.10. 17:45–18:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="727" y="155" width="8" height="20"><title>Mo 12.10. 18:00–18:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="736" y="155" width="8" height="20"><title>Mo 12.10. 18:15–18:30
+gemessen: 100 %</title></rect>
+<rect class="sev2" x="745" y="155" width="8" height="20"><title>Mo 12.10. 18:30–18:45
+gemessen: 100 %
+18:44:02 · 6,3 s · Provider</title></rect>
+<rect class="measured" x="754" y="155" width="8" height="20"><title>Mo 12.10. 18:45–19:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="763" y="155" width="8" height="20"><title>Mo 12.10. 19:00–19:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="772" y="155" width="8" height="20"><title>Mo 12.10. 19:15–19:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="781" y="155" width="8" height="20"><title>Mo 12.10. 19:30–19:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="790" y="155" width="8" height="20"><title>Mo 12.10. 19:45–20:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="799" y="155" width="8" height="20"><title>Mo 12.10. 20:00–20:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="808" y="155" width="8" height="20"><title>Mo 12.10. 20:15–20:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="817" y="155" width="8" height="20"><title>Mo 12.10. 20:30–20:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="826" y="155" width="8" height="20"><title>Mo 12.10. 20:45–21:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="835" y="155" width="8" height="20"><title>Mo 12.10. 21:00–21:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="844" y="155" width="8" height="20"><title>Mo 12.10. 21:15–21:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="853" y="155" width="8" height="20"><title>Mo 12.10. 21:30–21:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="862" y="155" width="8" height="20"><title>Mo 12.10. 21:45–22:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="871" y="155" width="8" height="20"><title>Mo 12.10. 22:00–22:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="880" y="155" width="8" height="20"><title>Mo 12.10. 22:15–22:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="889" y="155" width="8" height="20"><title>Mo 12.10. 22:30–22:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="898" y="155" width="8" height="20"><title>Mo 12.10. 22:45–23:00
+gemessen: 100 %</title></rect>
+<rect class="measured" x="907" y="155" width="8" height="20"><title>Mo 12.10. 23:00–23:15
+gemessen: 100 %</title></rect>
+<rect class="measured" x="916" y="155" width="8" height="20"><title>Mo 12.10. 23:15–23:30
+gemessen: 100 %</title></rect>
+<rect class="measured" x="925" y="155" width="8" height="20"><title>Mo 12.10. 23:30–23:45
+gemessen: 100 %</title></rect>
+<rect class="measured" x="934" y="155" width="8" height="20"><title>Mo 12.10. 23:45–24:00
+gemessen: 100 %</title></rect>
+</svg>
+<div class="legend">
+<span><svg width="12" height="12"><rect class="measured" width="12" height="12"/></svg> gemessen, kein Aussetzer</span>
+<span><svg width="12" height="12"><rect class="sev1" width="12" height="12"/></svg> Aussetzer unter 1 s</span>
+<span><svg width="12" height="12"><rect class="sev2" width="12" height="12"/></svg> Aussetzer 1–10 s</span>
+<span><svg width="12" height="12"><rect class="sev3" width="12" height="12"/></svg> Aussetzer über 10 s</span>
+<span><svg width="12" height="12"><rect class="partial" width="12" height="12"/></svg> teilweise gemessen</span>
+<span><svg width="12" height="12"><rect class="notmeasured" width="12" height="12"/></svg> nicht gemessen</span>
+<span><svg width="12" height="12"><rect class="future" width="12" height="12"/></svg> noch nicht erreicht</span>
+</div>
+<h2>Wiederkehrende Zeitfenster</h2>
+<p class="hint">Felder mit Aussetzern an mindestens zwei Tagen. Für die Rennplanung sind das die kritischen Uhrzeiten.</p>
+<table><thead><tr><th>Uhrzeit</th><th>Tage mit Aussetzer</th><th>Ursache</th><th>längster Aussetzer</th></tr></thead><tbody>
+<tr><td>02:00–02:15</td><td>6 von 6 gemessenen Tagen</td><td>Router</td><td>2 min 24 s</td></tr>
+<tr><td>21:00–21:15</td><td>2 von 7 gemessenen Tagen</td><td>Provider</td><td>0,8 s</td></tr>
+</tbody></table>
+<footer>Erstellt von NetWatch. Grundlage: netwatch_events.csv und netwatch_sessions.csv.</footer>
+</body>
+</html>

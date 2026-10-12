@@ -1,3 +1,4 @@
+using NetWatch.App.Cli;
 using NetWatch.App.Diagnostics;
 
 namespace NetWatch.App;
@@ -14,6 +15,11 @@ static class Program
         {
             int seconds = args.Length > 1 && int.TryParse(args[1], out int parsed) && parsed > 0 ? parsed : 600;
             return DiagnoseCommand.Run(seconds);
+        }
+
+        if (args.Length > 0 && args[0] == "--report-week")
+        {
+            return ReportWeekCommand.Run(args);
         }
 
         ApplicationConfiguration.Initialize();

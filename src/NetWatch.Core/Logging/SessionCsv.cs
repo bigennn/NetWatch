@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace NetWatch.Core.Logging;
 
 /// <summary>Werte für Start- und Endgründe einer Messphase.</summary>
@@ -37,6 +39,28 @@ public static class SessionCsv
     public const string FileName = "netwatch_sessions.csv";
 
     public const string Header = "start_local;end_local;start_utc;end_utc;start_reason;end_reason;note";
+
+    /// <summary>
+    /// Liest eine Zeile zurück, die <see cref="FormatLine"/> erzeugt hat; maßgeblich sind die UTC-Spalten.
+    /// Kopfzeile und unlesbare Zeilen liefern <c>false</c>.
+    /// </summary>
+    public static bool TryParseLine(string line, [NotNullWhen(true)] out Session? session)
+    {
+        session = null;
+        string[] columns = line.Split(';');
+        if (columns.Length != 7
+            || !Timestamps.TryParseUtc(columns[2], out DateTimeOffset startUtc)
+            || !Timestamps.TryParseUtc(columns[3], out DateTimeOffset endUtc)
+            || columns[4].Length == 0
+            || columns[5].Length == 0)
+        {
+            return false;
+        }
+
+        string[] notes = columns[6].Length == 0 ? [] : columns[6].Split(',');
+        session = new Session(startUtc, columns[4], endUtc, columns[5], notes);
+        return true;
+    }
 
     public static string FormatLine(Session session, TimeZoneInfo timeZone) => string.Join(';',
         Timestamps.FormatLocal(session.StartUtc, timeZone),
