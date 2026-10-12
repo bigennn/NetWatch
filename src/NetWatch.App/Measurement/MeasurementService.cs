@@ -36,14 +36,32 @@ internal sealed class MeasurementService : IAsyncDisposable
         _network = network;
         _journal = journal;
         _prober = new IcmpProber(clock, TimeoutMs);
-        _detector.OutageStarted += (_, start) => _journal.Post(j => j.OutageStarted(start));
-        _detector.OutageEnded += (_, outage) => _journal.Post(j => j.OutageEnded(outage));
+        _detector.OutageStarted += (_, start) =>
+        {
+            _journal.Post(j => j.OutageStarted(start));
+            OutageStarted?.Invoke(this, start);
+        };
+        _detector.OutageEnded += (_, outage) =>
+        {
+            _journal.Post(j => j.OutageEnded(outage));
+            OutageEnded?.Invoke(this, outage);
+        };
     }
 
-    /// <summary>Wird bei jedem Wechsel grau/grün/rot gemeldet (für das Tray-Symbol in M4); kommt vom Mess-Task.</summary>
+    // Die folgenden Ereignisse kommen vom Mess-Task. Empfänger dürfen nicht blockieren,
+    // die Oberfläche reiht sie deshalb nur in ihre eigene Warteschlange ein.
+
+    /// <summary>Wechsel grau/grün/rot.</summary>
     public event EventHandler<ConnectionState>? StateChanged;
 
+    public event EventHandler<OutageStart>? OutageStarted;
+
+    public event EventHandler<Outage>? OutageEnded;
+
     public ConnectionState State { get; private set; } = ConnectionState.Paused;
+
+    /// <summary>Der Router beantwortet keine Pings (wird im Hover-Text angezeigt).</summary>
+    public bool GatewayIgnoresPings => Volatile.Read(ref _gatewayNoteWritten);
 
     public void Start() => _loop = Task.Run(() => RunAsync(_cancellation.Token));
 

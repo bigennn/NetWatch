@@ -46,7 +46,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: F-06, F-07
 - Definition of Done: Symbol grün/rot/grau mit Hover-Text (Status, Verbindungsdauer, letzter Aussetzer); Menü „Protokollordner öffnen“, „Autostart“ (an/aus, Standard aus), „Beenden“. Messen stockt nicht, während das Menü offen ist. Single-File-.exe veröffentlicht. README für Teamkollegen mit SmartScreen-Hinweis. Manuelle Akzeptanztests F-06 und F-07 bestanden.
 - So teste ich es selbst: .exe starten, Kabel ziehen (Symbol wird binnen 1 s rot), Autostart einschalten, Windows neu starten, prüfen, dass NetWatch läuft. Danach NetWatch bis zum Rennen durchlaufen lassen.
-- Status: offen
+- Status: erledigt am 12.10.2026 (88 Tests grün; F-06, F-07, Einzelinstanz, Menü, Dauerlauf 2 h bestanden; Version 0.2.2; Messung läuft seit 12.10.2026 21:47)
 - Zieltermin: 17.10.2026 (Messstart)
 
 ## M5: Wochenbericht

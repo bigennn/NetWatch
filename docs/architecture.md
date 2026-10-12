@@ -56,7 +56,8 @@ Stand nach M3 (Mess-Task und Schreib-Task sind getrennt; dazwischen nur Wartesch
 - **NetWatchHost** (App): verbindet die Teile und reagiert auf Standby, Aufwachen (`SystemEvents.PowerModeChanged`) und Herunterfahren (`SystemEvents.SessionEnded`).
 - **OutageDetector** (Core): reine Logik ohne Windows-Abhängigkeit, Zustandsautomat. Erhält Prüfrunden (`ProbeRound`) mit ihren Zeitstempeln, braucht deshalb selbst keine Uhr. Meldet `OutageStarted` (sobald 2 Runden verloren sind, Beginn rückdatiert) und `OutageEnded`, führt den `ConnectionState` (grau/grün/rot) und kennt `Suspend` und `Stop`.
 - **Ursachenzuordnung** (Teil des Detektors), je Runde: `pc_lan`, wenn der Adapter getrennt ist oder jeder Ping „General Failure“ (11050) liefert; `unknown`, wenn kein Gateway bekannt ist oder der Router keine Pings beantwortet; `router`, wenn auch das Gateway nicht antwortet; sonst `provider`. Über den Aussetzer gilt die am weitesten vorne liegende Ursache.
-- **TrayUi:** Symbol grün, rot oder grau, Hover-Text, Menü mit „Protokollordner öffnen“, „Autostart“, „Beenden“.
+- **TrayAppContext** (App, M4): Symbol grün, rot oder grau, Hover-Text aus `TrayStatusText` (Core, höchstens 127 Zeichen, alle 10 s aufgefrischt), Menü mit „Protokollordner öffnen“, „Autostart“ (`HKCU…Run`), „Beenden“. Meldungen vom Mess-Task kommen über `SynchronizationContext.Post`. Ein Mutex verhindert eine zweite Instanz.
+- **Speicher:** `System.GC.HeapHardLimit` = 64 MB, damit der Garbage Collector unabhängig von der Cache-Größe des Prozessors regelmäßig aufräumt.
 - **ReportGenerator (Soll):** erzeugt HTML-Berichte mit selbst gezeichnetem SVG, öffnet sie im Standardbrowser; keine Diagrammbibliothek.
 
 ## Zeitbehandlung

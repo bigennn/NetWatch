@@ -66,6 +66,37 @@ public class EventCsvTests
         Assert.EndsWith($";{note}", EventCsv.FormatLine(outage, Berlin));
     }
 
+    [Theory]
+    [InlineData(OutageCause.Router, "192.168.178.1", null)]
+    [InlineData(OutageCause.Unknown, null, OutageNotes.EndUnknown)]
+    [InlineData(OutageCause.PcLan, "192.168.178.1", OutageNotes.Suspended)]
+    public void Formatted_line_can_be_read_back(OutageCause cause, string? gateway, string? note)
+    {
+        // Über die Zeitumstellung, damit auch die Ortszeit-Spalten Sonderfälle enthalten.
+        Outage original = Outage(new DateTimeOffset(2026, 10, 25, 0, 59, 59, 0, TimeSpan.Zero), 2_000, cause, ["1.1.1.1", "8.8.8.8"], gateway, note);
+
+        Assert.True(EventCsv.TryParseLine(EventCsv.FormatLine(original, Berlin), out Outage? parsed));
+
+        Assert.Equal(original.StartUtc, parsed.StartUtc);
+        Assert.Equal(original.EndUtc, parsed.EndUtc);
+        Assert.Equal(original.DurationMs, parsed.DurationMs);
+        Assert.Equal(original.Cause, parsed.Cause);
+        Assert.Equal(original.FailedTargets, parsed.FailedTargets);
+        Assert.Equal(original.Gateway, parsed.Gateway);
+        Assert.Equal(original.Note, parsed.Note);
+    }
+
+    [Theory]
+    [InlineData(EventCsv.Header)]
+    [InlineData("﻿" + EventCsv.Header)]
+    [InlineData("")]
+    [InlineData("kaputt;zeile")]
+    [InlineData("2026-10-13T02:00:03.412+02:00;x;2026-10-13T00:00:03.412Z;2026-10-13T00:00:05.214Z;1802;wlan;;;")]
+    public void Header_and_broken_lines_are_not_read_as_outages(string line)
+    {
+        Assert.False(EventCsv.TryParseLine(line, out _));
+    }
+
     [Fact]
     public void Missing_gateway_leaves_the_column_empty_and_keeps_nine_columns()
     {

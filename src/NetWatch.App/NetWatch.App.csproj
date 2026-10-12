@@ -6,13 +6,24 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>NetWatch</AssemblyName>
     <Product>NetWatch</Product>
-    <Version>0.1.0</Version>
+    <Version>0.2.2</Version>
   </PropertyGroup>
+
+  <!--
+    Obergrenze für den verwalteten Speicher. Ohne sie richtet .NET den Puffer für neue Objekte nach dem
+    L3-Cache aus (beim Ryzen 7800X3D 96 MB) und räumt bei einer so sparsamen App kaum je auf; der Speicher
+    wuchs dann um ca. 1,5 MB pro Minute. Mit 64 MB arbeitet der Garbage Collector regelmäßig (M4-Messung).
+    NetWatch selbst braucht weit unter 1 MB verwalteten Speicher.
+  -->
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.GC.HeapHardLimit" Value="67108864" />
+  </ItemGroup>
 
   <!-- Veröffentlichung als einzelne .exe (wirkt nur bei dotnet publish mit PublishSingleFile). -->
   <PropertyGroup>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <SatelliteResourceLanguages>de</SatelliteResourceLanguages>  </PropertyGroup>
+    <SatelliteResourceLanguages>de</SatelliteResourceLanguages>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NetWatch.Core\NetWatch.Core.csproj" />
