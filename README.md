@@ -30,7 +30,7 @@ Wichtig: NetWatch erkennt Aussetzer ab etwa 0,4 Sekunden. Noch kürzere Lücken 
 
 ## Für Entwickler
 
-Voraussetzung: Windows 10/11 und das .NET 10 SDK.
+Voraussetzung: Windows 10/11 und das .NET 10 SDK (zum Beispiel per `winget install Microsoft.DotNet.SDK.10`). Die SDK-Version und die Testplattform sind in `global.json` festgelegt.
 
 - Einrichten: `dotnet restore`
 - Starten: `dotnet run --project src/NetWatch.App`

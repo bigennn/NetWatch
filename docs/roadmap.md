@@ -9,7 +9,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: keine (Grundlage)
 - Definition of Done: Solution `NetWatch.sln` mit `src/NetWatch.Core` (net10.0, reine Logik), `src/NetWatch.App` (net10.0-windows, WinForms) und `tests/NetWatch.Core.Tests` (xUnit). `dotnet build` und `dotnet test` laufen fehlerfrei, ein Platzhaltertest ist grün. README enthält Einrichten, Starten und Testen.
 - So teste ich es selbst: `dotnet run --project src/NetWatch.App` ausführen, graues Symbol neben der Uhr suchen, Rechtsklick, „Beenden“.
-- Status: offen
+- Status: erledigt am 12.10.2026 (Build ohne Warnungen, 1 Test grün)
 - Zieltermin: 13.10.2026
 
 ## M1: Spikes S1 bis S4

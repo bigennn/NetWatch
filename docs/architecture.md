@@ -81,7 +81,8 @@ Einheiten: Zeiten in Millisekunden, Zeitstempel ISO 8601.
 | Paket | Zweck | Lizenz |
 | --- | --- | --- |
 | .NET 10 SDK und Runtime, WinForms | Laufzeit, Tray, Ping, Energieereignisse | MIT |
-| xUnit | automatische Tests, nur Entwicklung | Apache-2.0 |
+| xUnit (`xunit.v3` 4.0.2) | automatische Tests, nur Entwicklung | Apache-2.0 |
+| Microsoft.Testing.Platform (über `xunit.v3`) | Testausführung mit `dotnet test`, nur Entwicklung | MIT |
 
 ## Teststrategie
 
