@@ -22,7 +22,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
   - S4: Die M0-App ist als self-contained Single-File-.exe veröffentlicht und auf einem zweiten PC gestartet worden; Verhalten von SmartScreen und Virenscanner ist notiert.
   - Ergebnisse und Folgerungen stehen in `docs/decisions.md`.
 - So teste ich es selbst: Diagnose 10 Minuten laufen lassen und Ausgabe lesen; PC in Standby schicken und aufwecken; .exe einem Teamkollegen schicken.
-- Status: offen
+- Status: in Arbeit – S1, S2, S3 bestanden am 12.10.2026; S4 lokal erledigt, Rückmeldung vom Teamkollegen offen
 - Zieltermin: 14.10.2026
 
 ## M2: Erkennung und Ursache (MVP-Kern, reine Logik)

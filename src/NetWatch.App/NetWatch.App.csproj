@@ -5,7 +5,14 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>NetWatch</AssemblyName>
+    <Product>NetWatch</Product>
+    <Version>0.1.0</Version>
   </PropertyGroup>
+
+  <!-- Veröffentlichung als einzelne .exe (wirkt nur bei dotnet publish mit PublishSingleFile). -->
+  <PropertyGroup>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <SatelliteResourceLanguages>de</SatelliteResourceLanguages>  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NetWatch.Core\NetWatch.Core.csproj" />

@@ -1,3 +1,4 @@
+using NetWatch.App.Diagnostics;
 using NetWatch.Core;
 
 namespace NetWatch.App;
@@ -11,9 +12,11 @@ internal sealed class TrayAppContext : ApplicationContext
     private readonly Icon _pausedIcon;
     private readonly ContextMenuStrip _menu;
     private readonly NotifyIcon _notifyIcon;
+    private readonly PowerEventLog _powerLog;
 
     public TrayAppContext()
     {
+        _powerLog = new PowerEventLog(Path.Combine(AppPaths.DataDirectory, "diagnose_power.log"));
         _pausedIcon = StatusIcon.Create(ConnectionState.Paused);
 
         _menu = new ContextMenuStrip();
@@ -43,6 +46,7 @@ internal sealed class TrayAppContext : ApplicationContext
             _notifyIcon.Dispose();
             _menu.Dispose();
             _pausedIcon.Dispose();
+            _powerLog.Dispose();
         }
 
         base.Dispose(disposing);

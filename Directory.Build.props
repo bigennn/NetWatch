@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
+    <!-- Debug-Infos in die DLL/EXE statt in .pdb-Dateien daneben; Fehlermeldungen behalten Zeilennummern. -->
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
 </Project>

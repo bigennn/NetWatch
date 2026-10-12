@@ -35,6 +35,7 @@ Voraussetzung: Windows 10/11 und das .NET 10 SDK (zum Beispiel per `winget insta
 - Einrichten: `dotnet restore`
 - Starten: `dotnet run --project src/NetWatch.App`
 - Tests: `dotnet test`
+- Diagnose (pingt Gateway, 1.1.1.1 und 8.8.8.8 im 200-ms-Takt und gibt eine Auswertung aus): `dotnet run --project src/NetWatch.App -- --diagnose 600`. Mit der veröffentlichten .exe: `.\NetWatch.exe --diagnose 600 | Out-Host`, damit PowerShell auf das Ende wartet. Der Bericht landet zusätzlich in `%LOCALAPPDATA%\NetWatch\diagnose_<Datum>_<Uhrzeit>.txt`.
 - Veröffentlichen als einzelne .exe: `dotnet publish src/NetWatch.App -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true`
 
 Details stehen in `docs/`, die Arbeitsregeln für Claude Code in `CLAUDE.md`.
