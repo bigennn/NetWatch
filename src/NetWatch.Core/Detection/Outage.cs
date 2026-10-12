@@ -55,4 +55,4 @@ public sealed record Outage(
 /// <summary>
 /// Meldung, dass ein Aussetzer begonnen hat (nach der Mindestzahl verlorener Runden, Beginn rückdatiert).
 /// </summary>
-public sealed record OutageStart(DateTimeOffset StartUtc, OutageCause Cause, string? Gateway);
+public sealed record OutageStart(DateTimeOffset StartUtc, OutageCause Cause, string? Gateway, IReadOnlyList<string> FailedTargets);

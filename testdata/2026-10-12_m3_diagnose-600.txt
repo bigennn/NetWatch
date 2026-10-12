@@ -1,0 +1,31 @@
+﻿NetWatch-Diagnose 0.1.0.0
+Start: 2026-10-12T17:08:10.514+02:00 (2026-10-12T15:08:10.514Z), Dauer 600 s, Takt 200 ms, Zeitlimit 180 ms
+Rechner: 16 logische Kerne, Microsoft Windows 10.0.26200
+Adapter: Ethernet (Realtek Gaming 2.5GbE Family Controller), Typ Ethernet, Status Up
+Gateway: 192.168.178.1
+Gateway beantwortet Pings: ja
+Prüfziele: 192.168.178.1, 1.1.1.1, 8.8.8.8
+
+2026-10-12T17:09:10.581+02:00  60 s gemessen, 301 Runden
+2026-10-12T17:10:10.581+02:00  120 s gemessen, 601 Runden
+2026-10-12T17:11:10.566+02:00  180 s gemessen, 901 Runden
+2026-10-12T17:12:10.580+02:00  240 s gemessen, 1201 Runden
+2026-10-12T17:13:10.581+02:00  300 s gemessen, 1501 Runden
+2026-10-12T17:14:10.574+02:00  360 s gemessen, 1801 Runden
+2026-10-12T17:15:10.568+02:00  420 s gemessen, 2101 Runden
+2026-10-12T17:16:10.572+02:00  480 s gemessen, 2401 Runden
+2026-10-12T17:17:10.573+02:00  540 s gemessen, 2701 Runden
+2026-10-12T17:18:10.568+02:00  600 s gemessen, 3001 Runden
+
+=== Ergebnis ===
+Messdauer: 600,0 s, Runden: 3001
+Größter Abstand zwischen zwei Runden: 216 ms; verspätete Runden (> 300 ms): 0
+Längste Runde: 20 ms; Runden länger als der Takt: 0
+Ziel              Prüfungen  Verluste   RTT min / Median / max
+192.168.178.1          3001         0   0 / 0 / 18 ms
+1.1.1.1                3001         0   10 / 11 / 17 ms
+8.8.8.8                3001         0   12 / 12 / 19 ms
+Erwartet je Ziel: 3000 ± 1 %  ->  bestanden
+CPU-Last (Mittel über alle Kerne): 0,03 %
+Arbeitsspeicher: 54 MB (Spitze 54 MB)
+Bericht gespeichert: C:\Users\njans\AppData\Local\NetWatch\diagnose_2026-10-12_170810.txt

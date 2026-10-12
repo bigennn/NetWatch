@@ -73,8 +73,8 @@ internal static class DiagnoseCommand
             cancellation.Cancel();
         };
 
-        var clock = Stopwatch.StartNew();
-        using var prober = new IcmpProber(clock, TimeoutMs);
+        var clock = new SystemClock();
+        var prober = new IcmpProber(clock, TimeoutMs);
         using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(IntervalMs));
         var results = new List<ProbeResult>(durationSeconds * 1000 / IntervalMs * targets.Count + 64);
         using Process process = Process.GetCurrentProcess();
@@ -88,9 +88,9 @@ internal static class DiagnoseCommand
         {
             do
             {
-                long roundStartMs = clock.ElapsedMilliseconds;
+                long roundStartMs = clock.MonotonicMs;
                 ProbeResult[] roundResults = await prober.ProbeRoundAsync(round, targets);
-                long roundMs = clock.ElapsedMilliseconds - roundStartMs;
+                long roundMs = clock.MonotonicMs - roundStartMs;
 
                 longestRoundMs = Math.Max(longestRoundMs, roundMs);
                 if (roundMs > IntervalMs)
@@ -105,9 +105,9 @@ internal static class DiagnoseCommand
                 }
 
                 round++;
-                if (clock.ElapsedMilliseconds >= nextProgressMs)
+                if (clock.MonotonicMs >= nextProgressMs)
                 {
-                    log.Write($"{Now()}  {clock.ElapsedMilliseconds / 1000} s gemessen, {round} Runden");
+                    log.Write($"{Now()}  {clock.MonotonicMs / 1000} s gemessen, {round} Runden");
                     nextProgressMs += ProgressEveryMs;
                 }
             }
@@ -123,7 +123,7 @@ internal static class DiagnoseCommand
             NetworkChange.NetworkAddressChanged -= onAddress;
         }
 
-        long measuredMs = clock.ElapsedMilliseconds;
+        long measuredMs = clock.MonotonicMs;
         process.Refresh();
         double cpuPercent = (process.TotalProcessorTime - cpuAtStart).TotalMilliseconds
             / (measuredMs * Environment.ProcessorCount) * 100;

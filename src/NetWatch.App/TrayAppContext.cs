@@ -1,10 +1,10 @@
-using NetWatch.App.Diagnostics;
 using NetWatch.Core;
+using NetWatch.Core.Logging;
 
 namespace NetWatch.App;
 
 /// <summary>
-/// Hält das Tray-Symbol und sein Menü. Die App hat kein Hauptfenster;
+/// Hält das Tray-Symbol und sein Menü und startet den Messbetrieb. Die App hat kein Hauptfenster;
 /// sie läuft, bis "Beenden" gewählt wird.
 /// </summary>
 internal sealed class TrayAppContext : ApplicationContext
@@ -12,11 +12,10 @@ internal sealed class TrayAppContext : ApplicationContext
     private readonly Icon _pausedIcon;
     private readonly ContextMenuStrip _menu;
     private readonly NotifyIcon _notifyIcon;
-    private readonly PowerEventLog _powerLog;
+    private readonly NetWatchHost _host;
 
     public TrayAppContext()
     {
-        _powerLog = new PowerEventLog(Path.Combine(AppPaths.DataDirectory, "diagnose_power.log"));
         _pausedIcon = StatusIcon.Create(ConnectionState.Paused);
 
         _menu = new ContextMenuStrip();
@@ -25,10 +24,13 @@ internal sealed class TrayAppContext : ApplicationContext
         _notifyIcon = new NotifyIcon
         {
             Icon = _pausedIcon,
-            Text = "NetWatch – Messung pausiert",
+            Text = "NetWatch – Messung läuft",
             ContextMenuStrip = _menu,
             Visible = true,
         };
+
+        _host = new NetWatchHost();
+        _host.Start();
     }
 
     protected override void ExitThreadCore()
@@ -36,6 +38,10 @@ internal sealed class TrayAppContext : ApplicationContext
         // Sofort ausblenden, sonst bleibt ein "Geistersymbol" neben der Uhr,
         // bis die Maus darüberfährt.
         _notifyIcon.Visible = false;
+
+        // Auf einem Hintergrund-Thread warten: Die Abschluss-Schritte dürfen nicht auf den
+        // UI-Thread angewiesen sein, den wir hier blockieren.
+        Task.Run(() => _host.StopAsync(SessionReasons.Exit)).GetAwaiter().GetResult();
         base.ExitThreadCore();
     }
 
@@ -46,7 +52,6 @@ internal sealed class TrayAppContext : ApplicationContext
             _notifyIcon.Dispose();
             _menu.Dispose();
             _pausedIcon.Dispose();
-            _powerLog.Dispose();
         }
 
         base.Dispose(disposing);

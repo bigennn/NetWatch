@@ -89,11 +89,11 @@ Typische Größe: wenige Zeilen pro Tag, auch bei Dauerbetrieb über Monate unte
 | --- | --- | --- |
 | F-01 | `NetWatch --diagnose 600` laufen lassen und die gezählten Prüfungen ablesen. | Pro Ziel 3.000 ± 1 % Prüfungen bei 200 ms Takt. |
 | F-02 | Automatischer Test mit simuliertem Prüfer: Ausfall aller Internetziele von 12:00:00,000 bis 12:00:01,500. | Genau ein Aussetzer, Beginn 12:00:00,000 ± 1 Takt, Dauer 1.500 ms ± 1 Takt. |
-| F-02 | Manuell: LAN-Kabel 5 s ziehen und Zeit mit Stoppuhr notieren. | Ein Aussetzer, Beginn auf die Sekunde mit der notierten Zeit übereinstimmend, Dauer 5 s ± 1 s. (Offen für M3: Der Adapter braucht nach dem Einstecken einige Sekunden; Vergleich mit den Adapterzeiten „Down“/„Up“ statt mit der Zeit ohne Kabel, siehe `decisions.md`.) |
+| F-02 | Manuell: LAN-Kabel etwa 5 s ziehen, parallel `--diagnose` laufen lassen (protokolliert, wann Windows den Adapter als „Down“ und „Up“ meldet). | Ein Aussetzer `pc_lan`; Beginn ± 1 s zur Meldung „Down“, Dauer ± 1 s zur Zeit von „Down“ bis „Up“. (Geändert in M3: Der Adapter braucht nach dem Einstecken einige Sekunden, und eine von Hand notierte Uhrzeit ist nicht auf 1 s genau; siehe `decisions.md`.) |
 | F-02 | Automatischer Test: einzelne verlorene Prüfung an nur einem Ziel. | Kein Aussetzer. |
 | F-03 | Simulierter Prüfer: Router und Internet aus / nur Internet aus / Adapter getrennt. | Ursache `router` / `provider` / `pc_lan`. |
 | F-03 | Simulierter Prüfer: Router beantwortet nie Pings, Internet aus. | Ursache `unknown`. |
-| F-03 | Manuell: Router neu starten. | Ein Aussetzer mit Ursache `router`. |
+| F-03 | Manuell: Router neu starten (alternativ: Kabel zwischen Switch und Router ziehen). | Ein Aussetzer mit Ursache `router`. (Stand M3 offen: kein Zugriff auf die Fritzbox; wird mit einem echten Router-Neustart in der Messphase nachgeholt.) |
 | F-04 | Ereignisprotokoll in Excel öffnen. | Spalten wie oben, Umlaute korrekt, eine Zeile pro Aussetzer. |
 | F-04 | Automatischer Test: Aussetzer über die Zeitumstellung 25.10.2026 02:59:59 MESZ bis 02:00:01 MEZ. | Dauer 2 s, nicht 1 h 0 min 2 s; UTC-Werte korrekt. |
 | F-05 | PC in Standby schicken und aufwecken. | Laufzeitprotokoll zeigt die Pause; kein Aussetzer für die Standby-Zeit. |

@@ -289,6 +289,58 @@ public class OutageDetectorTests
         Assert.Equal(2_000, outage.DurationMs);
     }
 
+    // ---- Anlaufphase nach Start und Aufwachen (R2 in M3) ----
+
+    [Fact]
+    public void Lost_rounds_right_after_start_are_ignored_until_the_first_answer()
+    {
+        // Autostart nach der Anmeldung: das Netz ist noch nicht bereit.
+        var detector = new OutageDetector();
+        var scenario = new Scenario().AdapterDown(Utc(12, 0, 0), Utc(12, 0, 6));
+
+        List<Outage> outages = scenario.Run(detector, Utc(12, 0, 0), Utc(12, 0, 10));
+
+        Assert.Empty(outages);
+        Assert.Equal(ConnectionState.Connected, detector.State);
+    }
+
+    [Fact]
+    public void Without_any_answer_detection_starts_after_the_warmup_time()
+    {
+        var scenario = new Scenario().InternetDown(Utc(12, 0, 0), Utc(12, 1, 0));
+
+        Outage outage = Assert.Single(scenario.Run(new OutageDetector(), Utc(12, 0, 0), Utc(12, 1, 10)));
+
+        Assert.Equal(Utc(12, 0, 0).AddMilliseconds(OutageDetector.DefaultWarmupMs), outage.StartUtc);
+        Assert.Equal(60_000 - OutageDetector.DefaultWarmupMs, outage.DurationMs);
+    }
+
+    [Fact]
+    public void Lost_rounds_right_after_resume_are_ignored_until_the_first_answer()
+    {
+        var detector = new OutageDetector();
+        var outages = new List<Outage>();
+        detector.OutageEnded += (_, o) => outages.Add(o);
+        var scenario = new Scenario().AdapterDown(Utc(12, 0, 5), Utc(12, 0, 12));
+        ProbeRound[] rounds = scenario.Rounds(Utc(12, 0, 0), Utc(12, 0, 20)).ToArray();
+
+        foreach (ProbeRound round in rounds.Where(r => r.SentAtUtc < Utc(12, 0, 4)))
+        {
+            detector.Process(round);
+        }
+
+        detector.Suspend(rounds[20].SentAtMonotonicMs);
+
+        // Aufwachen um 12:00:05; der Adapter verbindet sich erst um 12:00:12.
+        foreach (ProbeRound round in rounds.Where(r => r.SentAtUtc >= Utc(12, 0, 5)))
+        {
+            detector.Process(round);
+        }
+
+        Assert.Empty(outages);
+        Assert.Equal(ConnectionState.Connected, detector.State);
+    }
+
     // ---- Zeit ----
 
     [Fact]

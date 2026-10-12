@@ -24,16 +24,28 @@ public sealed class OutageDetector
     /// </summary>
     public const int SilentGatewayRounds = 5;
 
+    /// <summary>
+    /// Anlaufphase nach dem Start und nach dem Aufwachen: Verlorene Runden zählen erst ab der ersten
+    /// beantworteten Runde, spätestens nach dieser Zeit. Sonst erzeugte jedes Aufwachen einen falschen
+    /// Aussetzer, weil der Netzwerkadapter einige Sekunden zum Verbinden braucht.
+    /// </summary>
+    public const int DefaultWarmupMs = 30_000;
+
     private readonly int _minLostRounds;
+    private readonly int _warmupMs;
+    private bool _warmingUp = true;
+    private long? _warmupStartMs;
     private readonly List<(ProbeRound Round, OutageCause Cause)> _pendingLost = [];
     private RunningOutage? _current;
     private string? _gatewayAddress;
     private int _silentGatewayRounds;
 
-    public OutageDetector(int minLostRounds = DefaultMinLostRounds)
+    public OutageDetector(int minLostRounds = DefaultMinLostRounds, int warmupMs = DefaultWarmupMs)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(minLostRounds, 1);
+        ArgumentOutOfRangeException.ThrowIfNegative(warmupMs);
         _minLostRounds = minLostRounds;
+        _warmupMs = warmupMs;
     }
 
     /// <summary>Wird gemeldet, sobald ein Aussetzer feststeht (nach der letzten nötigen verlorenen Runde).</summary>
@@ -50,6 +62,17 @@ public sealed class OutageDetector
     public void Process(ProbeRound round)
     {
         TrackGateway(round);
+
+        if (_warmingUp)
+        {
+            _warmupStartMs ??= round.SentAtMonotonicMs;
+            if (round.InternetLost && round.SentAtMonotonicMs - _warmupStartMs < _warmupMs)
+            {
+                return;
+            }
+
+            _warmingUp = false;
+        }
 
         if (!round.InternetLost)
         {
@@ -85,7 +108,7 @@ public sealed class OutageDetector
 
         _pendingLost.Clear();
         State = ConnectionState.Outage;
-        OutageStarted?.Invoke(this, new OutageStart(_current.StartUtc, _current.Cause, _current.Gateway));
+        OutageStarted?.Invoke(this, new OutageStart(_current.StartUtc, _current.Cause, _current.Gateway, _current.FailedTargets));
     }
 
     /// <summary>
@@ -105,6 +128,8 @@ public sealed class OutageDetector
         }
 
         _pendingLost.Clear();
+        _warmingUp = true;
+        _warmupStartMs = null;
         State = ConnectionState.Paused;
     }
 

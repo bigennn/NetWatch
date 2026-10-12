@@ -28,35 +28,34 @@ Stand: 12.10.2026, Stack A (C# mit .NET 10) gewählt.
 
 ## Architektur
 
+Stand nach M3 (Mess-Task und Schreib-Task sind getrennt; dazwischen nur Warteschlangen):
+
 ```
-                 +-----------------+
- Settings.json ->|  SettingsStore  |
-                 +--------+--------+
-                          v
-+-------------+   ProbeResult   +----------------+  Outage  +-----------------+
-|   Prober    |---------------->| OutageDetector |--------->|  EventLogWriter |-> netwatch_events.csv
-| (ICMP, je   |                 | (Zustands-     |          | (CSV, Puffer bei|
-|  Ziel, Takt)|                 |  automat)      |          |  gesperrter Datei)
-+------+------+                 +-------+--------+          +-----------------+
-       ^                                | Status
-GatewayResolver                         v
-(Standardroute)                  +-------------+     +-----------------+
-                                 |   TrayUi    |     | SessionTracker  |-> netwatch_sessions.csv
-                                 | (Symbol,    |     | (Start, Ende,   |
-                                 |  Menü)      |     |  Standby, Crash)|
-                                 +-------------+     +-----------------+
-                                        |
-                                        v  (Soll, nach dem MVP)
-                                 +----------------+
-                                 | ReportGenerator|-> report_day.html, report_week.html
-                                 +----------------+
+ NetworkMonitor (Gateway, Adapter; alle 60 s und bei Netzwerkänderung)
+        |
+        v
++--------------------- Mess-Task (200 ms) ----------------------+
+| IcmpProber --ProbeRound--> OutageDetector --Started/Ended--+  |
++------------------------------------------------------------|--+
+                                  | ConnectionState          | Post (Channel)
+                                  v                          v
+                          TrayAppContext (M4)   +---- Schreib-Task ----+
+                                                | JournalWriter        |
+ NetWatchHost: Start, Standby,  --Post-------->  |  Journal (Core)      |-> netwatch_events.csv
+ Aufwachen, Herunterfahren,                     |  BufferedLog je CSV  |-> netwatch_sessions.csv
+ Beenden                                        |  StateFile           |-> state.json
+                                                +----------------------+
+                                  (Soll, nach dem MVP)
+                                  ReportGenerator -> report_day.html, report_week.html
 ```
 
-- **Prober** (`IcmpProber`, App): pingt alle Ziele einer Prüfrunde gleichzeitig mit Zeitlimit 180 ms bei 200 ms Takt. Weil Windows das Zeitlimit beim Adapterwechsel nicht immer einhält (M1: bis 504 ms), bekommt er in M3 ein eigenes Zeitlimit, und eine hängende Prüfung hält die nächste Runde nicht auf.
-- **GatewayResolver** (App): fragt Windows nach dem Adapter mit der besten Route zu 1.1.1.1 (`GetBestInterface`, iphlpapi.dll) und nimmt dessen IPv4-Gateway; prüft es alle 60 s erneut.
+- **Prober** (`IcmpProber`, App): pingt alle Ziele einer Prüfrunde gleichzeitig mit Zeitlimit 180 ms bei 200 ms Takt. Weil Windows das Zeitlimit beim Adapterwechsel nicht immer einhält (M1: bis 504 ms), wartet er selbst höchstens 180 ms; jede Prüfung läuft als synchrones `Ping.Send` mit eigener Instanz auf einem Thread-Pool-Thread und darf im Hintergrund zu Ende laufen (M3: längste Runde 189 ms beim Kabelziehen). `SendPingAsync` wird bewusst nicht verwendet, weil es je Aufruf ein Windows-Handle belegt, das erst ein vollständiger GC-Lauf freigibt.
+- **GatewayResolver / NetworkMonitor** (App): fragt Windows nach dem Adapter mit der besten Route zu 1.1.1.1 (`GetBestInterface`, iphlpapi.dll) und nimmt dessen IPv4-Gateway; der `NetworkMonitor` aktualisiert Gateway und Adapterstatus alle 60 s und bei `NetworkAddressChanged`, außerhalb des Takt-Pfads.
+- **MeasurementService** (App): Mess-Task mit `PeriodicTimer`; baut aus jeder Runde eine `ProbeRound`, gibt sie dem Detektor und reicht dessen Meldungen per `Post` an den `JournalWriter` weiter. Kennt `Suspend`/`Resume` und meldet `StateChanged` für das Tray-Symbol.
+- **Journal** (Core) und **JournalWriter** (App): Das Journal schreibt Ereignis- und Laufzeitprotokoll, puffert bei gesperrter Datei (`BufferedLog`), führt die Zustandsdatei `state.json` (Lebenszeichen spätestens alle 60 s) und erkennt beim Start einen Absturz (`Recover`). Der JournalWriter führt es auf einem eigenen Task; alle 10 s werden gepufferte Zeilen nachgeschrieben.
+- **NetWatchHost** (App): verbindet die Teile und reagiert auf Standby, Aufwachen (`SystemEvents.PowerModeChanged`) und Herunterfahren (`SystemEvents.SessionEnded`).
 - **OutageDetector** (Core): reine Logik ohne Windows-Abhängigkeit, Zustandsautomat. Erhält Prüfrunden (`ProbeRound`) mit ihren Zeitstempeln, braucht deshalb selbst keine Uhr. Meldet `OutageStarted` (sobald 2 Runden verloren sind, Beginn rückdatiert) und `OutageEnded`, führt den `ConnectionState` (grau/grün/rot) und kennt `Suspend` und `Stop`.
 - **Ursachenzuordnung** (Teil des Detektors), je Runde: `pc_lan`, wenn der Adapter getrennt ist oder jeder Ping „General Failure“ (11050) liefert; `unknown`, wenn kein Gateway bekannt ist oder der Router keine Pings beantwortet; `router`, wenn auch das Gateway nicht antwortet; sonst `provider`. Über den Aussetzer gilt die am weitesten vorne liegende Ursache.
-- **EventLogWriter und SessionTracker:** schreiben CSV-Dateien in `%LOCALAPPDATA%\NetWatch\` und erkennen einen Absturz an einer offenen Sitzung beim nächsten Start.
 - **TrayUi:** Symbol grün, rot oder grau, Hover-Text, Menü mit „Protokollordner öffnen“, „Autostart“, „Beenden“.
 - **ReportGenerator (Soll):** erzeugt HTML-Berichte mit selbst gezeichnetem SVG, öffnet sie im Standardbrowser; keine Diagrammbibliothek.
 

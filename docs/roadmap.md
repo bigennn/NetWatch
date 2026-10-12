@@ -38,7 +38,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: F-01, F-04, F-05
 - Definition of Done: Prober, GatewayResolver, EventLogWriter und SessionTracker sind verbunden. CSV-Dateien in `%LOCALAPPDATA%\NetWatch\` im Format aus `requirements.md`. Grüne Tests für CSV-Format, Zeitumstellung am 25.10.2026, gesperrte Datei (Puffer) und Absturzerkennung. Akzeptanztest F-01 (10 Minuten, Prüfungen zählen) bestanden.
 - So teste ich es selbst: Messung starten, LAN-Kabel 5 s ziehen und Uhrzeit notieren, `netwatch_events.csv` in Excel öffnen und vergleichen; PC in Standby schicken und `netwatch_sessions.csv` prüfen.
-- Status: offen
+- Status: erledigt am 12.10.2026 (67 Tests grün; F-01 3.001 Prüfungen je Ziel; Kabel, Standby, Absturz, Excel-Sperre bestanden; F-03 manuell offen, kein Zugriff auf die Fritzbox)
 - Zieltermin: 16.10.2026
 
 ## M4: Tray-App, Autostart und Dauerbetrieb
