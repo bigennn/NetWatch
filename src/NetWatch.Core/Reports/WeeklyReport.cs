@@ -77,7 +77,7 @@ public sealed class WeeklyReport
     public const int DayCount = 7;
 
     /// <summary>Hinweis für einen Aussetzer, der beim Erstellen des Berichts noch läuft.</summary>
-    public const string RunningNote = "läuft";
+    public const string RunningNote = ReportInputs.RunningNote;
 
     private static readonly TimeSpan Minute = TimeSpan.FromMinutes(1);
 
@@ -125,25 +125,8 @@ public sealed class WeeklyReport
         DateOnly today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(nowUtc.AddTicks(-1), timeZone).DateTime);
         DateOnly firstDay = today.AddDays(-(DayCount - 1));
 
-        var measured = sessions.Select(s => (Start: s.StartUtc, End: s.EndUtc)).ToList();
-        if (runningSessionStartUtc is { } runningStart)
-        {
-            measured.Add((runningStart, nowUtc));
-        }
-
-        var allOutages = outages.ToList();
-        if (runningOutage is not null)
-        {
-            long runningMs = (long)Math.Max(0, (nowUtc - runningOutage.StartUtc).TotalMilliseconds);
-            allOutages.Add(new Outage(
-                runningOutage.StartUtc,
-                nowUtc,
-                runningMs,
-                runningOutage.Cause,
-                runningOutage.FailedTargets,
-                runningOutage.Gateway,
-                RunningNote));
-        }
+        List<MeasuredSpan> measured = ReportInputs.MeasuredSpans(sessions, runningSessionStartUtc, nowUtc);
+        List<Outage> allOutages = ReportInputs.OutagesWithRunning(outages, runningOutage, nowUtc);
 
         var grid = new SlotAccumulator[DayCount, SlotsPerDay];
         for (int d = 0; d < DayCount; d++)
@@ -155,8 +138,8 @@ public sealed class WeeklyReport
         }
 
         // Zeit minutenweise durchgehen: Feldgrenzen und Zeitumstellungen liegen immer auf vollen Minuten.
-        DateTimeOffset windowStart = LocalMidnightUtc(firstDay, timeZone);
-        DateTimeOffset windowEnd = LocalMidnightUtc(today.AddDays(1), timeZone);
+        DateTimeOffset windowStart = ReportInputs.LocalMidnightUtc(firstDay, timeZone);
+        DateTimeOffset windowEnd = ReportInputs.LocalMidnightUtc(today.AddDays(1), timeZone);
         for (DateTimeOffset minute = windowStart; minute < windowEnd; minute += Minute)
         {
             if (!TryLocate(minute, firstDay, timeZone, out int day, out int slot, out bool repeated))
@@ -174,9 +157,9 @@ public sealed class WeeklyReport
 
             DateTimeOffset minuteEnd = Min(minute + Minute, nowUtc);
             cell.ElapsedMs += (long)(minuteEnd - minute).TotalMilliseconds;
-            foreach ((DateTimeOffset start, DateTimeOffset end) in measured)
+            foreach (MeasuredSpan span in measured)
             {
-                cell.MeasuredMs += OverlapMs(minute, minuteEnd, start, end);
+                cell.MeasuredMs += ReportInputs.OverlapMs(minute, minuteEnd, span.StartUtc, span.EndUtc);
             }
         }
 
@@ -278,19 +261,6 @@ public sealed class WeeklyReport
         slot = (local.Hour * 60 + local.Minute) / SlotMinutes;
         repeated = timeZone.IsAmbiguousTime(local);
         return day is >= 0 and < DayCount;
-    }
-
-    private static DateTimeOffset LocalMidnightUtc(DateOnly date, TimeZoneInfo timeZone)
-    {
-        DateTime local = date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Unspecified);
-        return new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(local, timeZone), TimeSpan.Zero);
-    }
-
-    private static long OverlapMs(DateTimeOffset aStart, DateTimeOffset aEnd, DateTimeOffset bStart, DateTimeOffset bEnd)
-    {
-        DateTimeOffset start = Max(aStart, bStart);
-        DateTimeOffset end = Min(aEnd, bEnd);
-        return end > start ? (long)(end - start).TotalMilliseconds : 0;
     }
 
     private static DateTimeOffset FloorToMinute(DateTimeOffset value) =>

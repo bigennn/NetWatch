@@ -17,9 +17,9 @@ static class Program
             return DiagnoseCommand.Run(seconds);
         }
 
-        if (args.Length > 0 && args[0] == "--report-week")
+        if (args.Length > 0 && args[0] is "--report-week" or "--report-day")
         {
-            return ReportWeekCommand.Run(args);
+            return ReportCommand.Run(args);
         }
 
         ApplicationConfiguration.Initialize();

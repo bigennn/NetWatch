@@ -62,7 +62,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: F-08
 - Definition of Done: Tray-Menü „Tagesbericht öffnen“ mit Tagesauswahl; Zeitleiste, Tabelle (Beginn, Dauer, Ursache), Verfügbarkeit in Prozent, Messlücken grau. Tests grün.
 - So teste ich es selbst: Tagesbericht für einen Tag mit eigenem Kabeltest öffnen und mit der notierten Uhrzeit vergleichen.
-- Status: offen
+- Status: erledigt am 12.10.2026 (138 Tests grün; Tagesberichte aus Beispieldaten, Zeitumstellungstag und echten Daten geprüft; Version 0.4.0)
 - Zieltermin: 22.10.2026
 
 ## M7: Einstellbare Empfindlichkeit

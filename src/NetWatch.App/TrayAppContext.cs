@@ -5,6 +5,7 @@ using NetWatch.App.Reports;
 using NetWatch.Core;
 using NetWatch.Core.Detection;
 using NetWatch.Core.Logging;
+using NetWatch.Core.Reports;
 
 namespace NetWatch.App;
 
@@ -24,6 +25,7 @@ internal sealed class TrayAppContext : ApplicationContext
     private readonly Dictionary<ConnectionState, Icon> _icons;
     private readonly ContextMenuStrip _menu;
     private readonly ToolStripMenuItem _autostartItem;
+    private readonly ToolStripMenuItem _dailyItem;
     private readonly NotifyIcon _notifyIcon;
     private readonly System.Windows.Forms.Timer _textTimer;
     private readonly SynchronizationContext _ui;
@@ -40,6 +42,10 @@ internal sealed class TrayAppContext : ApplicationContext
 
         _menu = new ContextMenuStrip();
         _menu.Items.Add("Wochenbericht öffnen", null, (_, _) => OpenWeeklyReport());
+        _dailyItem = new ToolStripMenuItem("Tagesbericht");
+        _dailyItem.DropDownItems.Add("…"); // Platzhalter, damit Windows den Pfeil zeigt; Einträge entstehen beim Öffnen
+        _dailyItem.DropDownOpening += (_, _) => FillDailyMenu();
+        _menu.Items.Add(_dailyItem);
         _menu.Items.Add("Protokollordner öffnen", null, (_, _) => OpenLogFolder());
         _autostartItem = new ToolStripMenuItem("Autostart", null, (_, _) => ToggleAutostart());
         _menu.Items.Add(_autostartItem);
@@ -107,25 +113,72 @@ internal sealed class TrayAppContext : ApplicationContext
     /// </summary>
     private void OpenWeeklyReport()
     {
-        DateTimeOffset? sessionStart = _host.CurrentSessionStartUtc;
-        OutageStart? runningOutage = _runningOutage;
-        string output = Path.Combine(AppPaths.DataDirectory, WeeklyReportWriter.FileName);
+        string output = Path.Combine(AppPaths.DataDirectory, ReportHtml.WeeklyFileName);
+        OpenReport("Wochenbericht", output, (writer, now) => writer.WriteWeekly(output, now));
+    }
 
+    private void OpenDailyReport(DateOnly date)
+    {
+        string output = Path.Combine(AppPaths.DataDirectory, ReportHtml.DailyFileName(date));
+        OpenReport("Tagesbericht", output, (writer, now) => writer.WriteDaily(date, output, now));
+    }
+
+    /// <summary>
+    /// Erzeugt einen Bericht auf einem Hintergrund-Thread und öffnet ihn im Standardbrowser. Die laufende
+    /// Messphase und ein laufender Aussetzer stehen noch nicht in den CSV-Dateien und werden mitgegeben.
+    /// </summary>
+    private void OpenReport(string name, string output, Action<ReportWriter, DateTimeOffset> write)
+    {
+        var writer = new ReportWriter(AppPaths.DataDirectory, _host.CurrentSessionStartUtc ?? DateTimeOffset.UtcNow, _runningOutage);
         Task.Run(() =>
         {
             try
             {
-                WeeklyReportWriter.Write(AppPaths.DataDirectory, output, DateTimeOffset.UtcNow, sessionStart, runningOutage);
+                write(writer, DateTimeOffset.UtcNow);
                 Process.Start(new ProcessStartInfo(output) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
-                ErrorLog.Write($"Wochenbericht: {ex}");
+                ErrorLog.Write($"{name}: {ex}");
                 _ui.Post(
-                    _ => MessageBox.Show("Der Wochenbericht konnte nicht erstellt werden. Details stehen in netwatch_errors.log.", "NetWatch", MessageBoxButtons.OK, MessageBoxIcon.Warning),
+                    _ => MessageBox.Show($"Der {name} konnte nicht erstellt werden. Details stehen in netwatch_errors.log.", "NetWatch", MessageBoxButtons.OK, MessageBoxIcon.Warning),
                     null);
             }
         });
+    }
+
+    /// <summary>Füllt das Untermenü "Tagesbericht" mit den letzten sieben Tagen, heute oben.</summary>
+    private void FillDailyMenu()
+    {
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateOnly today = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now, TimeZoneInfo.Local).DateTime);
+        HashSet<DateOnly> measuredDays;
+        try
+        {
+            measuredDays = new ReportWriter(AppPaths.DataDirectory, _host.CurrentSessionStartUtc ?? now).MeasuredDays(now);
+        }
+        catch (IOException)
+        {
+            measuredDays = [today];
+        }
+
+        _dailyItem.DropDownItems.Clear();
+        for (int back = 0; back < WeeklyReport.DayCount; back++)
+        {
+            DateOnly day = today.AddDays(-back);
+            string label = back switch
+            {
+                0 => $"Heute ({ReportHtml.DayLabel(day)})",
+                1 => $"Gestern ({ReportHtml.DayLabel(day)})",
+                _ => ReportHtml.DayLabel(day),
+            };
+            if (!measuredDays.Contains(day))
+            {
+                label += " (keine Messung)";
+            }
+
+            _dailyItem.DropDownItems.Add(label, null, (_, _) => OpenDailyReport(day));
+        }
     }
 
     private static void OpenLogFolder()

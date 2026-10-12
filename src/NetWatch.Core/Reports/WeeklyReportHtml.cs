@@ -1,12 +1,13 @@
-using System.Globalization;
 using System.Text;
 using NetWatch.Core.Detection;
+using static NetWatch.Core.Reports.ReportHtml;
 
 namespace NetWatch.Core.Reports;
 
 /// <summary>
 /// Erzeugt den Wochenbericht als eigenständige HTML-Datei mit selbst gezeichnetem SVG
 /// (kein JavaScript, keine Diagrammbibliothek; Details erscheinen als Hover über SVG-<c>title</c>).
+/// Die Tagesbeschriftungen verlinken auf die Tagesberichte (<see cref="ReportHtml.DailyFileName"/>).
 /// </summary>
 public static class WeeklyReportHtml
 {
@@ -16,9 +17,6 @@ public static class WeeklyReportHtml
     private const int HeaderHeight = 22;
     private const int MaxOutagesInTooltip = 8;
 
-    private static readonly CultureInfo German = CultureInfo.GetCultureInfo("de-DE");
-    private static readonly string[] WeekdayShort = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
-
     public static string Render(WeeklyReport report)
     {
         var html = new StringBuilder();
@@ -26,53 +24,33 @@ public static class WeeklyReportHtml
         DateOnly last = report.Days[^1].Date;
         DateTimeOffset generatedLocal = TimeZoneInfo.ConvertTime(report.NowUtc, report.TimeZone);
 
-        html.AppendLine("<!DOCTYPE html>");
-        html.AppendLine("<html lang=\"de\">");
-        html.AppendLine("<head>");
-        html.AppendLine("<meta charset=\"utf-8\">");
-        html.AppendLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-        html.AppendLine("<title>NetWatch – Wochenbericht</title>");
-        html.AppendLine("<style>");
-        html.AppendLine(Css);
-        html.AppendLine("</style>");
-        html.AppendLine("</head>");
-        html.AppendLine("<body>");
+        AppendHead(html, "NetWatch – Wochenbericht", Css);
         html.AppendLine("<h1>NetWatch – Wochenbericht</h1>");
-        html.Append("<p class=\"meta\">Zeitraum: ").Append(Encode(DayLabel(first) + "." + first.Year))
-            .Append(" bis ").Append(Encode(DayLabel(last) + "." + last.Year))
+        html.Append("<p class=\"meta\">Zeitraum: ").Append(Encode(DayLabel(first) + first.Year))
+            .Append(" bis ").Append(Encode(DayLabel(last) + last.Year))
             .Append(" · Stand ").Append(Encode(generatedLocal.ToString("dd.MM.yyyy HH:mm", German)))
             .AppendLine(" · alle Zeiten in Ortszeit</p>");
 
         AppendSummary(html, report.Summary);
 
         html.AppendLine("<h2>Raster: Tag × Uhrzeit</h2>");
-        html.AppendLine("<p class=\"hint\">Ein Feld = 15 Minuten. Fahre mit der Maus über ein Feld, um Uhrzeit, Dauer und Ursache der Aussetzer zu sehen.</p>");
+        html.AppendLine("<p class=\"hint\">Ein Feld = 15 Minuten. Fahre mit der Maus über ein Feld, um Uhrzeit, Dauer und Ursache der Aussetzer zu sehen. Ein Klick auf einen Tag öffnet den Tagesbericht.</p>");
         AppendGrid(html, report);
         AppendLegend(html);
 
-        List<DateOnly> repeatedDays = report.Days
-            .Where(day => day.Slots.Any(slot => slot.RepeatedHour))
-            .Select(day => day.Date)
-            .ToList();
-        foreach (DateOnly day in repeatedDays)
+        foreach (DateOnly day in report.Days.Where(day => day.Slots.Any(slot => slot.RepeatedHour)).Select(day => day.Date))
         {
             html.Append("<p class=\"note\">Zeitumstellung am ").Append(Encode(DayLabel(day)))
-                .AppendLine(".: Die Stunde 02:00–03:00 gab es zweimal; beide liegen in denselben Feldern (im Hover markiert).</p>");
+                .AppendLine(": Die Stunde 02:00–03:00 gab es zweimal; beide liegen in denselben Feldern (im Hover markiert).</p>");
         }
 
         AppendRecurring(html, report);
-
-        html.AppendLine("<footer>Erstellt von NetWatch. Grundlage: netwatch_events.csv und netwatch_sessions.csv.</footer>");
-        html.AppendLine("</body>");
-        html.AppendLine("</html>");
+        AppendFoot(html);
         return html.ToString();
     }
 
     private static void AppendSummary(StringBuilder html, ReportSummary summary)
     {
-        string availability = summary.Availability is { } value
-            ? (value * 100).ToString("0.000", German) + " %"
-            : "–";
         string causes = summary.CountByCause.Count == 0
             ? "–"
             : string.Join(" · ", summary.CountByCause
@@ -80,18 +58,13 @@ public static class WeeklyReportHtml
                 .Select(pair => $"{TrayStatusText.CauseText(pair.Key)} {pair.Value}"));
 
         html.AppendLine("<div class=\"summary\">");
-        AppendFigure(html, "Messabdeckung", (summary.Coverage * 100).ToString("0.0", German) + " %",
+        AppendFigure(html, "Messabdeckung", Percent(summary.Coverage, "0.0"),
             $"{TrayStatusText.FormatDuration(summary.MeasuredMs)} von {TrayStatusText.FormatDuration(summary.ElapsedMs)}");
         AppendFigure(html, "Aussetzer", summary.OutageCount.ToString(German), causes);
         AppendFigure(html, "Gesamtdauer", summary.OutageCount == 0 ? "–" : TrayStatusText.FormatDuration(summary.OutageMs), "aller Aussetzer im Zeitraum");
-        AppendFigure(html, "Verfügbarkeit", availability, "bezogen auf die gemessene Zeit");
+        AppendFigure(html, "Verfügbarkeit", summary.Availability is { } value ? Percent(value, "0.000") : "–", "bezogen auf die gemessene Zeit");
         html.AppendLine("</div>");
     }
-
-    private static void AppendFigure(StringBuilder html, string label, string value, string detail) =>
-        html.Append("<div class=\"figure\"><div class=\"label\">").Append(Encode(label))
-            .Append("</div><div class=\"value\">").Append(Encode(value))
-            .Append("</div><div class=\"detail\">").Append(Encode(detail)).AppendLine("</div></div>");
 
     private static void AppendGrid(StringBuilder html, WeeklyReport report)
     {
@@ -113,7 +86,8 @@ public static class WeeklyReportHtml
         {
             ReportDay day = report.Days[d];
             int y = HeaderHeight + d * CellHeight;
-            html.Append("<text class=\"day\" x=\"0\" y=\"").Append(y + 15).Append("\">").Append(Encode(DayLabel(day.Date) + ".")).AppendLine("</text>");
+            html.Append("<a href=\"").Append(DailyFileName(day.Date)).Append("\"><text class=\"day\" x=\"0\" y=\"").Append(y + 15).Append("\">")
+                .Append(Encode(DayLabel(day.Date))).AppendLine("</text></a>");
             foreach (ReportSlot slot in day.Slots)
             {
                 int x = LabelWidth + slot.Index * CellWidth;
@@ -178,7 +152,7 @@ public static class WeeklyReportHtml
     private static string Tooltip(DateOnly date, ReportSlot slot, TimeZoneInfo timeZone)
     {
         var text = new StringBuilder();
-        text.Append(DayLabel(date)).Append(". ").Append(WeeklyReport.SlotStartText(slot.Index)).Append('–').Append(WeeklyReport.SlotEndText(slot.Index));
+        text.Append(DayLabel(date)).Append(' ').Append(WeeklyReport.SlotStartText(slot.Index)).Append('–').Append(WeeklyReport.SlotEndText(slot.Index));
         if (slot.RepeatedHour)
         {
             text.Append(" (doppelte Stunde, Zeitumstellung)");
@@ -189,7 +163,7 @@ public static class WeeklyReportHtml
             SlotState.Future => "noch nicht erreicht",
             SlotState.Nonexistent => "gibt es nicht (Zeitumstellung)",
             SlotState.NotMeasured => "nicht gemessen",
-            _ => "gemessen: " + (slot.Coverage * 100).ToString("0", German) + " %",
+            _ => "gemessen: " + Percent(slot.Coverage, "0"),
         });
 
         foreach (Outage outage in slot.Outages.Take(MaxOutagesInTooltip))
@@ -200,7 +174,7 @@ public static class WeeklyReportHtml
                 : localStart.ToString("dd.MM. HH:mm:ss", German);
             text.Append('\n').Append(start).Append(" · ").Append(TrayStatusText.FormatDuration(outage.DurationMs))
                 .Append(" · ").Append(TrayStatusText.CauseText(outage.Cause));
-            if (outage.Note == WeeklyReport.RunningNote)
+            if (outage.Note == ReportInputs.RunningNote)
             {
                 text.Append(" (läuft)");
             }
@@ -229,49 +203,11 @@ public static class WeeklyReportHtml
         },
     };
 
-    /// <summary>Z. B. "Mo 13.10" (der Punkt nach dem Monat kommt vom Aufrufer).</summary>
-    private static string DayLabel(DateOnly date) => $"{WeekdayShort[(int)date.DayOfWeek]} {date:dd.MM}";
-
-    /// <summary>
-    /// Maskiert nur die HTML-Sonderzeichen; Umlaute bleiben lesbar, weil die Datei als UTF-8 geschrieben wird
-    /// (<see cref="System.Net.WebUtility.HtmlEncode(string)"/> würde sie in Zahlencodes umwandeln).
-    /// </summary>
-    private static string Encode(string text) => text
-        .Replace("&", "&amp;")
-        .Replace("<", "&lt;")
-        .Replace(">", "&gt;")
-        .Replace("\"", "&quot;")
-        .Replace("'", "&#39;");
-
     private const string Css = """
-        body { font-family: "Segoe UI", system-ui, sans-serif; margin: 24px; color: #1f2328; background: #ffffff; }
-        h1 { font-size: 22px; margin: 0 0 4px; }
-        h2 { font-size: 17px; margin: 28px 0 6px; }
-        .meta, .hint, .note, footer { color: #59636e; font-size: 13px; }
-        .note { color: #8a5a00; }
-        .summary { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-        .figure { border: 1px solid #d1d9e0; border-radius: 6px; padding: 10px 14px; min-width: 170px; }
-        .figure .label { font-size: 12px; color: #59636e; }
-        .figure .value { font-size: 22px; font-weight: 600; margin: 2px 0; }
-        .figure .detail { font-size: 12px; color: #59636e; }
         .grid { display: block; max-width: 100%; height: auto; }
-        .grid text { font-size: 11px; fill: #1f2328; }
         .grid .hour { fill: #59636e; }
         .grid .tick { stroke: #ffffff; stroke-width: 1; }
-        .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin-top: 8px; }
-        .legend svg { vertical-align: -2px; }
-        rect.measured { fill: #cdeccd; }
-        rect.sev1 { fill: #f6b0b0; }
-        rect.sev2 { fill: #e05a5a; }
-        rect.sev3 { fill: #a30f0f; }
-        rect.partial { fill: url(#hatch); }
-        rect.notmeasured { fill: #d6d6d6; }
-        rect.nonexistent { fill: #f0f0f0; }
-        rect.future { fill: #ffffff; stroke: #e6e6e6; }
-        rect:hover { stroke: #1f2328; stroke-width: 1.5; }
-        table { border-collapse: collapse; font-size: 14px; }
-        th, td { border-bottom: 1px solid #d1d9e0; padding: 6px 12px; text-align: left; }
-        th { font-weight: 600; }
-        footer { margin-top: 32px; }
+        .grid a text { fill: #0969da; text-decoration: underline; }
+        .grid rect:hover { stroke: #1f2328; stroke-width: 1.5; }
         """;
 }

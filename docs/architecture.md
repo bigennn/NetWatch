@@ -59,7 +59,7 @@ Stand nach M3 (Mess-Task und Schreib-Task sind getrennt; dazwischen nur Wartesch
 - **TrayAppContext** (App, M4): Symbol grün, rot oder grau, Hover-Text aus `TrayStatusText` (Core, höchstens 127 Zeichen, alle 10 s aufgefrischt), Menü mit „Protokollordner öffnen“, „Autostart“ (`HKCU…Run`), „Beenden“. Meldungen vom Mess-Task kommen über `SynchronizationContext.Post`. Ein Mutex verhindert eine zweite Instanz.
 - **Speicher:** `System.GC.HeapHardLimit` = 64 MB, damit der Garbage Collector unabhängig von der Cache-Größe des Prozessors regelmäßig aufräumt.
 - **Wochenbericht** (M5): `WeeklyReport` (Core) berechnet Raster, Messabdeckung, wiederkehrende Zeitfenster und Kennzahlen aus Aussetzern und Messphasen; `WeeklyReportHtml` (Core) erzeugt eine eigenständige HTML-Datei mit selbst gezeichnetem SVG; `WeeklyReportWriter` (App) liest die CSV-Dateien (auch wenn sie in Excel offen sind) und schreibt `report_week.html`. Aufruf über das Tray-Menü oder `--report-week`.
-- **Tagesbericht (Soll, M6):** folgt.
+- **Tagesbericht** (M6): `DailyReport` (Core) berechnet für einen Tag (23, 24 oder 25 h) gemessene Abschnitte, Messlücken mit Grund, Aussetzer und Kennzahlen; `DailyReportHtml` (Core) zeichnet die Zeitleiste und die Tabellen. Gemeinsame Bausteine in `ReportInputs` und `ReportHtml`; `ReportWriter` (App) schreibt beide Berichte. Aufruf über das Tray-Untermenü, den Link im Wochenbericht oder `--report-day`.
 
 ## Zeitbehandlung
 

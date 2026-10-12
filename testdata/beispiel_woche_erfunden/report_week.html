@@ -8,6 +8,7 @@
 body { font-family: "Segoe UI", system-ui, sans-serif; margin: 24px; color: #1f2328; background: #ffffff; }
 h1 { font-size: 22px; margin: 0 0 4px; }
 h2 { font-size: 17px; margin: 28px 0 6px; }
+a { color: #0969da; }
 .meta, .hint, .note, footer { color: #59636e; font-size: 13px; }
 .note { color: #8a5a00; }
 .summary { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
@@ -15,10 +16,7 @@ h2 { font-size: 17px; margin: 28px 0 6px; }
 .figure .label { font-size: 12px; color: #59636e; }
 .figure .value { font-size: 22px; font-weight: 600; margin: 2px 0; }
 .figure .detail { font-size: 12px; color: #59636e; }
-.grid { display: block; max-width: 100%; height: auto; }
-.grid text { font-size: 11px; fill: #1f2328; }
-.grid .hour { fill: #59636e; }
-.grid .tick { stroke: #ffffff; stroke-width: 1; }
+svg text { font-size: 11px; fill: #1f2328; }
 .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; margin-top: 8px; }
 .legend svg { vertical-align: -2px; }
 rect.measured { fill: #cdeccd; }
@@ -29,11 +27,16 @@ rect.partial { fill: url(#hatch); }
 rect.notmeasured { fill: #d6d6d6; }
 rect.nonexistent { fill: #f0f0f0; }
 rect.future { fill: #ffffff; stroke: #e6e6e6; }
-rect:hover { stroke: #1f2328; stroke-width: 1.5; }
 table { border-collapse: collapse; font-size: 14px; }
-th, td { border-bottom: 1px solid #d1d9e0; padding: 6px 12px; text-align: left; }
+th, td { border-bottom: 1px solid #d1d9e0; padding: 6px 12px; text-align: left; vertical-align: top; }
 th { font-weight: 600; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
 footer { margin-top: 32px; }
+.grid { display: block; max-width: 100%; height: auto; }
+.grid .hour { fill: #59636e; }
+.grid .tick { stroke: #ffffff; stroke-width: 1; }
+.grid a text { fill: #0969da; text-decoration: underline; }
+.grid rect:hover { stroke: #1f2328; stroke-width: 1.5; }
 </style>
 </head>
 <body>
@@ -46,7 +49,7 @@ footer { margin-top: 32px; }
 <div class="figure"><div class="label">Verfügbarkeit</div><div class="value">99,805 %</div><div class="detail">bezogen auf die gemessene Zeit</div></div>
 </div>
 <h2>Raster: Tag × Uhrzeit</h2>
-<p class="hint">Ein Feld = 15 Minuten. Fahre mit der Maus über ein Feld, um Uhrzeit, Dauer und Ursache der Aussetzer zu sehen.</p>
+<p class="hint">Ein Feld = 15 Minuten. Fahre mit der Maus über ein Feld, um Uhrzeit, Dauer und Ursache der Aussetzer zu sehen. Ein Klick auf einen Tag öffnet den Tagesbericht.</p>
 <svg class="grid" role="img" aria-label="Wochenraster" viewBox="0 0 942 176" width="942" height="176">
 <defs><pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#d6d6d6"/><rect width="2" height="4" fill="#b7dfb7"/></pattern></defs>
 <text class="hour" x="78" y="14">00</text>
@@ -97,7 +100,7 @@ footer { margin-top: 32px; }
 <line class="tick" x1="870" y1="17" x2="870" y2="176"/>
 <text class="hour" x="906" y="14">23</text>
 <line class="tick" x1="906" y1="17" x2="906" y2="176"/>
-<text class="day" x="0" y="37">Di 06.10.</text>
+<a href="report_day_2026-10-06.html"><text class="day" x="0" y="37">Di 06.10.</text></a>
 <rect class="measured" x="79" y="23" width="8" height="20"><title>Di 06.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="23" width="8" height="20"><title>Di 06.10. 00:15–00:30
@@ -291,7 +294,7 @@ gemessen: 100 %</title></rect>
 gemessen: 100 %</title></rect>
 <rect class="measured" x="934" y="23" width="8" height="20"><title>Di 06.10. 23:45–24:00
 gemessen: 100 %</title></rect>
-<text class="day" x="0" y="59">Mi 07.10.</text>
+<a href="report_day_2026-10-07.html"><text class="day" x="0" y="59">Mi 07.10.</text></a>
 <rect class="measured" x="79" y="45" width="8" height="20"><title>Mi 07.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="45" width="8" height="20"><title>Mi 07.10. 00:15–00:30
@@ -486,7 +489,7 @@ gemessen: 100 %</title></rect>
 gemessen: 100 %</title></rect>
 <rect class="measured" x="934" y="45" width="8" height="20"><title>Mi 07.10. 23:45–24:00
 gemessen: 100 %</title></rect>
-<text class="day" x="0" y="81">Do 08.10.</text>
+<a href="report_day_2026-10-08.html"><text class="day" x="0" y="81">Do 08.10.</text></a>
 <rect class="measured" x="79" y="67" width="8" height="20"><title>Do 08.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="67" width="8" height="20"><title>Do 08.10. 00:15–00:30
@@ -681,7 +684,7 @@ gemessen: 100 %</title></rect>
 gemessen: 100 %</title></rect>
 <rect class="measured" x="934" y="67" width="8" height="20"><title>Do 08.10. 23:45–24:00
 gemessen: 100 %</title></rect>
-<text class="day" x="0" y="103">Fr 09.10.</text>
+<a href="report_day_2026-10-09.html"><text class="day" x="0" y="103">Fr 09.10.</text></a>
 <rect class="measured" x="79" y="89" width="8" height="20"><title>Fr 09.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="89" width="8" height="20"><title>Fr 09.10. 00:15–00:30
@@ -875,7 +878,7 @@ gemessen: 100 %</title></rect>
 gemessen: 100 %</title></rect>
 <rect class="measured" x="934" y="89" width="8" height="20"><title>Fr 09.10. 23:45–24:00
 gemessen: 100 %</title></rect>
-<text class="day" x="0" y="125">Sa 10.10.</text>
+<a href="report_day_2026-10-10.html"><text class="day" x="0" y="125">Sa 10.10.</text></a>
 <rect class="measured" x="79" y="111" width="8" height="20"><title>Sa 10.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="111" width="8" height="20"><title>Sa 10.10. 00:15–00:30
@@ -1071,7 +1074,7 @@ gemessen: 100 %</title></rect>
 gemessen: 100 %</title></rect>
 <rect class="measured" x="934" y="111" width="8" height="20"><title>Sa 10.10. 23:45–24:00
 gemessen: 100 %</title></rect>
-<text class="day" x="0" y="147">So 11.10.</text>
+<a href="report_day_2026-10-11.html"><text class="day" x="0" y="147">So 11.10.</text></a>
 <rect class="measured" x="79" y="133" width="8" height="20"><title>So 11.10. 00:00–00:15
 gemessen: 100 %</title></rect>
 <rect class="measured" x="88" y="133" width="8" height="20"><title>So 11.10. 00:15–00:30
@@ -1266,7 +1269,7 @@ gemessen: 100 %</title></rect>
 nicht gemessen</title></rect>
 <rect class="notmeasured" x="934" y="133" width="8" height="20"><title>So 11.10. 23:45–24:00
 nicht gemessen</title></rect>
-<text class="day" x="0" y="169">Mo 12.10.</text>
+<a href="report_day_2026-10-12.html"><text class="day" x="0" y="169">Mo 12.10.</text></a>
 <rect class="notmeasured" x="79" y="155" width="8" height="20"><title>Mo 12.10. 00:00–00:15
 nicht gemessen</title></rect>
 <rect class="notmeasured" x="88" y="155" width="8" height="20"><title>Mo 12.10. 00:15–00:30
