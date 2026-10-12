@@ -24,6 +24,7 @@ Die Dateien liegen in `%LOCALAPPDATA%\NetWatch\` und lassen sich mit Excel öffn
   - `pc_lan`: Netzwerkkabel oder Netzwerkkarte getrennt
   - `router`: auch der Router antwortet nicht, typisch für einen Router-Neustart
   - `provider`: der Router antwortet, das Internet dahinter nicht
+  - `unknown`: nicht eingrenzbar, weil dein Router grundsätzlich keine Pings beantwortet
 - `netwatch_sessions.csv`: wann NetWatch gemessen hat und wann nicht
 
 Wichtig: NetWatch erkennt Aussetzer ab etwa 0,4 Sekunden. Noch kürzere Lücken fallen zwischen zwei Prüfungen durch.

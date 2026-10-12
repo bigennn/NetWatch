@@ -52,10 +52,10 @@ GatewayResolver                         v
                                  +----------------+
 ```
 
-- **Prober:** sendet pro Ziel im Prüftakt einen Ping mit Zeitlimit kleiner als der Takt; die Ziele laufen parallel.
-- **GatewayResolver:** ermittelt das Standard-Gateway und prüft es alle 60 s erneut.
-- **OutageDetector:** reine Logik ohne Windows-Abhängigkeit. Erhält Prüfergebnisse und eine Uhr von außen, damit Tests mit simulierten Daten laufen.
-- **CauseClassifier** (Teil des Detektors): `pc_lan`, wenn der Adapter getrennt ist; `router`, wenn auch das Gateway nicht antwortet; sonst `provider`.
+- **Prober** (`IcmpProber`, App): pingt alle Ziele einer Prüfrunde gleichzeitig mit Zeitlimit 180 ms bei 200 ms Takt. Weil Windows das Zeitlimit beim Adapterwechsel nicht immer einhält (M1: bis 504 ms), bekommt er in M3 ein eigenes Zeitlimit, und eine hängende Prüfung hält die nächste Runde nicht auf.
+- **GatewayResolver** (App): fragt Windows nach dem Adapter mit der besten Route zu 1.1.1.1 (`GetBestInterface`, iphlpapi.dll) und nimmt dessen IPv4-Gateway; prüft es alle 60 s erneut.
+- **OutageDetector** (Core): reine Logik ohne Windows-Abhängigkeit, Zustandsautomat. Erhält Prüfrunden (`ProbeRound`) mit ihren Zeitstempeln, braucht deshalb selbst keine Uhr. Meldet `OutageStarted` (sobald 2 Runden verloren sind, Beginn rückdatiert) und `OutageEnded`, führt den `ConnectionState` (grau/grün/rot) und kennt `Suspend` und `Stop`.
+- **Ursachenzuordnung** (Teil des Detektors), je Runde: `pc_lan`, wenn der Adapter getrennt ist oder jeder Ping „General Failure“ (11050) liefert; `unknown`, wenn kein Gateway bekannt ist oder der Router keine Pings beantwortet; `router`, wenn auch das Gateway nicht antwortet; sonst `provider`. Über den Aussetzer gilt die am weitesten vorne liegende Ursache.
 - **EventLogWriter und SessionTracker:** schreiben CSV-Dateien in `%LOCALAPPDATA%\NetWatch\` und erkennen einen Absturz an einer offenen Sitzung beim nächsten Start.
 - **TrayUi:** Symbol grün, rot oder grau, Hover-Text, Menü mit „Protokollordner öffnen“, „Autostart“, „Beenden“.
 - **ReportGenerator (Soll):** erzeugt HTML-Berichte mit selbst gezeichnetem SVG, öffnet sie im Standardbrowser; keine Diagrammbibliothek.
@@ -69,12 +69,13 @@ GatewayResolver                         v
 
 | Objekt | Felder |
 | --- | --- |
-| ProbeResult | `Target` (IP), `SentAtUtc`, `RttMs` (leer bei Verlust) |
-| Outage | `StartUtc`, `EndUtc`, `StartLocal`, `EndLocal`, `DurationMs`, `Cause`, `FailedTargets`, `Gateway` |
-| Session | `StartUtc`, `EndUtc`, `EndReason` (`exit`, `standby`, `hibernate`, `crash_detected`) |
-| Settings | `IntervalMs` (200), `MinLostProbes` (2), `InternetTargets` (`1.1.1.1`, `8.8.8.8`), `Sensitivity` (`normal`) |
+| ProbeResult | `Round`, `Target` (IP), `SentAtUtc`, `SentAtMonotonicMs`, `RttMs` (leer bei Verlust), `Status` (Windows-Status, z. B. `Success`, `TimedOut`, `11050`) |
+| ProbeRound | `Number`, `SentAtUtc`, `SentAtMonotonicMs`, `Gateway` (ProbeResult oder leer), `Internet` (ProbeResults), `AdapterDown` |
+| Outage | `StartUtc`, `EndUtc` (= Beginn + Dauer), `DurationMs`, `Cause` (`PcLan`, `Router`, `Provider`, `Unknown`), `FailedTargets`, `Gateway`, `Note` (`suspended`, `app_exit`, `end_unknown`). Die Ortszeit berechnet der CSV-Schreiber mit `Timestamps`. |
+| Session | `StartUtc`, `StartLocal`, `StartReason` (`start`, `resume`), `EndUtc`, `EndLocal`, `EndReason` (`exit`, `suspend`, `shutdown`, `crash_detected`) |
+| Settings | `settings.json` in `%LOCALAPPDATA%\NetWatch\`: `Sensitivity` (`normal`; bestimmt den Takt: fein 100 ms, normal 200 ms, grob 500 ms), `MinLostRounds` (2), `InternetTargets` (`1.1.1.1`, `8.8.8.8`) |
 
-Einheiten: Zeiten in Millisekunden, Zeitstempel ISO 8601.
+Einheiten: Zeiten in Millisekunden, Zeitstempel ISO 8601 mit Millisekunden.
 
 ## Abhängigkeiten und Lizenzen (Stack A)
 

@@ -17,5 +17,11 @@ public sealed record ProbeResult(
     long? RttMs,
     string Status)
 {
+    /// <summary>
+    /// Status, den Windows sofort für jeden Ping liefert, solange der Netzwerkadapter getrennt ist
+    /// (IP_GENERAL_FAILURE, beobachtet im Kabeltest von M1).
+    /// </summary>
+    public const string GeneralFailureStatus = "11050";
+
     public bool IsLost => RttMs is null;
 }

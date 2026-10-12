@@ -30,7 +30,7 @@ Zeitliche Leitplanke: Bis etwa Samstag, 17.10.2026, soll NetWatch (M0 bis M4) da
 - Anforderungen: F-02, F-03
 - Definition of Done: `OutageDetector` und Ursachenzuordnung in `NetWatch.Core`, ohne Windows-Abhängigkeit, mit simulierter Uhr und simuliertem Prüfer getestet. Grüne Tests für alle Akzeptanzkriterien von F-02 und F-03 aus `requirements.md` (1,5-s-Ausfall, einzelner Paketverlust, `router`, `provider`, `pc_lan`).
 - So teste ich es selbst: `dotnet test` ausführen und die Testnamen lesen; Claude Code erklärt jeden Testfall in einem Satz.
-- Status: offen
+- Status: erledigt am 12.10.2026 (38 Tests grün, davon 25 für den Detektor)
 - Zieltermin: 15.10.2026
 
 ## M3: Protokolle und Messbetrieb ohne Oberfläche

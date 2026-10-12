@@ -1,13 +1,14 @@
 # Anforderungen: NetWatch
 
-Stand: 12.10.2026, Prioritäten von Nils eingeordnet.
+Stand: 12.10.2026, Prioritäten von Nils eingeordnet; nach M2 an die Entscheidungen F4 bis F13 und R1 bis R4 angepasst (siehe `decisions.md`).
 
 ## Begriffe
 
 - **Prüfung:** eine einzelne Erreichbarkeitsanfrage (Ping) an ein Prüfziel.
-- **Prüfziele:** der Router (Standard-Gateway, automatisch ermittelt) und zwei öffentliche Internetziele (Vorschlag: 1.1.1.1 und 8.8.8.8).
-- **Aussetzer:** ein Zeitraum, in dem kein Internetziel antwortet. Er beginnt mit der ersten verlorenen Prüfung einer Serie und endet mit der ersten erfolgreichen Antwort.
-- **Prüftakt:** Abstand zwischen zwei Prüfungen desselben Ziels. Standard: 200 ms (von Nils gewählt). Lücken, die kürzer als der Prüftakt sind, können nicht sicher erkannt werden.
+- **Prüfziele:** der Router (Standard-Gateway, automatisch ermittelt) und zwei öffentliche Internetziele: 1.1.1.1 und 8.8.8.8.
+- **Prüfrunde:** Alle Prüfziele werden im selben Takt gleichzeitig gepingt; eine Runde ist verloren, wenn kein Internetziel antwortet.
+- **Aussetzer:** ab 2 verlorenen Runden in Folge. Er beginnt mit der Sendezeit der ersten verlorenen Runde und endet mit der Sendezeit der ersten Runde, in der ein Internetziel antwortet. Die Dauer stammt aus der monotonen Uhr; das Ende ist immer Beginn plus Dauer.
+- **Prüftakt:** Abstand zwischen zwei Prüfrunden. Standard: 200 ms (von Nils gewählt). Weil ein Aussetzer 2 verlorene Runden braucht, werden Lücken erst ab etwa 2 Takten (0,4 s) sicher erkannt.
 
 ## Funktionale Anforderungen
 
@@ -18,7 +19,7 @@ Stand: 12.10.2026, Prioritäten von Nils eingeordnet.
 | F-03 | Als Fahrer will ich, dass jeder Aussetzer eine Ursache bekommt (PC/LAN, Router, Provider), damit ich z. B. einen Router-Neustart von einem Providerausfall unterscheide. | Muss |
 | F-04 | Als Fahrer will ich alle Aussetzer in einer Protokolldatei finden, die ich auch in Excel öffnen kann, damit ich sie auswerten und im Team teilen kann. | Muss |
 | F-05 | Als Fahrer will ich, dass NetWatch protokolliert, wann es selbst lief (Start, Ende, Standby, Ruhezustand), damit ich „keine Aussetzer“ von „nicht gemessen“ unterscheiden kann. | Muss |
-| F-06 | Als Fahrer will ich ein Tray-Symbol mit Status (grün: verbunden, rot: Aussetzer läuft, grau: Messung pausiert), Hover-Info und Menü (Protokollordner öffnen, Beenden). | Muss |
+| F-06 | Als Fahrer will ich ein Tray-Symbol mit Status (grün: verbunden, rot: Aussetzer läuft, grau: keine gültige Messung, d. h. beim Start bis zur ersten Prüfrunde und direkt nach dem Aufwachen), Hover-Info und Menü (Protokollordner öffnen, Beenden). | Muss |
 | F-07 | Als Fahrer will ich im Tray-Menü einschalten können, dass NetWatch automatisch mit Windows startet, damit die Messung nicht von meinem Gedächtnis abhängt. Standard: aus. | Muss |
 | F-08 | Als Fahrer will ich einen Tagesbericht mit 24-h-Zeitleiste und Ereignistabelle, damit ich einen Tag auf einen Blick sehe. | Soll |
 | F-09 | Als Fahrer will ich einen Wochenbericht als Raster Wochentag × Uhrzeit, damit wiederkehrende Zeitpunkte wie 02:00 auffallen. | Soll |
@@ -28,31 +29,37 @@ Stand: 12.10.2026, Prioritäten von Nils eingeordnet.
 
 ## Ein- und Ausgaben
 
-**Eingaben:** keine Dateien. NetWatch ermittelt das Standard-Gateway selbst; Einstellungen kommen aus einer optionalen `settings.json` neben dem Programm (Felder siehe Datenmodell in `architecture.md`).
+**Eingaben:** keine Dateien. NetWatch ermittelt das Standard-Gateway selbst; Einstellungen kommen aus einer optionalen `settings.json` in `%LOCALAPPDATA%\NetWatch\` (Felder siehe Datenmodell in `architecture.md`).
 
-**Ausgabe 1, Ereignisprotokoll** `netwatch_events.csv` (UTF-8, Semikolon, eine Zeile pro Ereignis). Beispiel mit erfundenen Werten:
+**Ausgabe 1, Ereignisprotokoll** `netwatch_events.csv` (UTF-8 mit BOM, damit Excel Umlaute richtig zeigt; Semikolon; eine Zeile pro Ereignis). Beispiel mit erfundenen Werten:
 
 ```
-start_local;end_local;start_utc;duration_ms;cause;failed_targets;gateway
-2026-10-13T02:00:03.412+02:00;2026-10-13T02:00:05.214+02:00;2026-10-13T00:00:03.412Z;1802;router;192.168.178.1,1.1.1.1,8.8.8.8;192.168.178.1
-2026-10-13T14:38:51.090+02:00;2026-10-13T14:42:56.120+02:00;2026-10-13T12:38:51.090Z;245030;provider;1.1.1.1,8.8.8.8;192.168.178.1
+start_local;end_local;start_utc;end_utc;duration_ms;cause;failed_targets;gateway;note
+2026-10-13T02:00:03.412+02:00;2026-10-13T02:00:05.214+02:00;2026-10-13T00:00:03.412Z;2026-10-13T00:00:05.214Z;1802;router;192.168.178.1,1.1.1.1,8.8.8.8;192.168.178.1;
+2026-10-13T14:38:51.090+02:00;2026-10-13T14:42:56.120+02:00;2026-10-13T12:38:51.090Z;2026-10-13T12:42:56.120Z;245030;provider;1.1.1.1,8.8.8.8;192.168.178.1;
 ```
 
-Ursachenwerte: `pc_lan` (Netzwerkadapter meldet getrennt), `router` (Router und Internetziele antworten nicht), `provider` (Router antwortet, Internetziele nicht).
+Ursachenwerte: `pc_lan` (Netzwerkadapter meldet getrennt oder jeder Ping liefert sofort „General Failure“), `router` (Router und Internetziele antworten nicht), `provider` (Router antwortet, Internetziele nicht), `unknown` (nicht eingrenzbar, weil der Router grundsätzlich keine Pings beantwortet oder kein Gateway bekannt ist). Treten während eines Aussetzers mehrere Ursachen auf, gilt die am weitesten vorne liegende: `pc_lan` vor `router` vor `unknown` vor `provider` (ein Router-Neustart mit anschließender DSL-Synchronisation bleibt ein Ereignis mit `router`).
 
-**Ausgabe 2, Laufzeitprotokoll** `netwatch_sessions.csv`: Start, Ende und Grund (Programmstart, Beenden, Standby, Ruhezustand, Absturz erkannt beim nächsten Start).
+`failed_targets`: alle Ziele, die während des Aussetzers mindestens einmal nicht antworteten, Gateway zuerst. `gateway`: Gateway zu Beginn des Aussetzers, leer, wenn keines bekannt ist. `note`: leer oder `suspended` (Ende durch Standby), `app_exit` (Ende durch Beenden), `end_unknown` (Absturz, Ende unbekannt).
+
+**Ausgabe 2, Laufzeitprotokoll** `netwatch_sessions.csv`: Beginn und Ende jeder Messphase in UTC und Ortszeit. Startgründe `start`, `resume`; Endgründe `exit`, `suspend`, `shutdown`, `crash_detected`. Hinweise wie „Router beantwortet keine Pings“ stehen ebenfalls hier.
 
 Typische Größe: wenige Zeilen pro Tag, auch bei Dauerbetrieb über Monate unter 1 MB.
 
 ## Grenzfälle
 
 - **Zeitumstellung:** Die Sommerzeit endet am 25.10.2026 um 03:00, also mitten im 24-h-Rennen. Deshalb werden immer UTC und Ortszeit mit Versatz gespeichert.
-- **Standby oder Ruhezustand:** Der Sim-PC läuft während der Messphasen durch (Angabe von Nils); trotzdem gilt: Die Pause wird als Messlücke im Laufzeitprotokoll vermerkt, nicht als Aussetzer.
-- **Aussetzer beim Beenden oder Absturz:** Beim nächsten Start wird ein offener Aussetzer mit Ende „unbekannt“ abgeschlossen.
-- **Gateway ändert sich oder mehrere Adapter (z. B. VPN):** Das Gateway wird regelmäßig neu ermittelt; verwendet wird der Adapter mit der Standardroute.
-- **Router beantwortet keine Pings:** NetWatch erkennt das beim Start und meldet, dass die Ursache dann nur „Internet weg“ heißen kann.
+- **Standby oder Ruhezustand:** Der Sim-PC läuft während der Messphasen durch (Angabe von Nils); trotzdem gilt: Die Pause wird als Messlücke im Laufzeitprotokoll vermerkt, nicht als Aussetzer. Ein laufender Aussetzer endet beim Standby (Hinweis `suspended`). Windows unterscheidet Standby und Ruhezustand nicht; beides heißt `suspend`.
+- **Aussetzer beim Beenden:** Ein laufender Aussetzer endet beim Beenden (Hinweis `app_exit`).
+- **Aussetzer beim Absturz:** Beim nächsten Start wird ein offener Aussetzer abgeschlossen (Hinweis `end_unknown`); eine minütlich aktualisierte Zustandsdatei erlaubt eine Schätzung des Endes.
+- **Herunterfahren oder Abmelden:** wird als Endgrund `shutdown` vermerkt, nicht als Absturz.
+- **Gateway ändert sich oder mehrere Adapter (z. B. VPN):** Das Gateway wird regelmäßig neu ermittelt; verwendet wird der Adapter mit der Route ins Internet.
+- **Router beantwortet keine Pings:** NetWatch erkennt das daran, dass der Router mehrere Runden lang schweigt, während das Internet antwortet. Die Ursache heißt dann `unknown`; der Hinweis erscheint im Hover-Text und im Laufzeitprotokoll, nicht als Benachrichtigung.
+- **Zweiter Start:** Läuft NetWatch schon, startet keine zweite Instanz (M4).
 - **Protokolldatei gesperrt** (z. B. in Excel geöffnet): Einträge werden gepuffert und später geschrieben, nichts geht verloren.
-- **Einzelne verlorene Pings** ohne echten Ausfall: Ein Aussetzer zählt erst ab einer Mindestzahl verlorener Prüfungen in Folge bei allen Internetzielen (Vorschlag: 2).
+- **Einzelne verlorene Pings** ohne echten Ausfall: Ein Aussetzer zählt erst ab 2 verlorenen Prüfrunden in Folge, also Runden, in denen kein Internetziel antwortet.
+- **Windows hält das Ping-Zeitlimit nicht immer ein** (beim Adapterwechsel bis 504 ms beobachtet): Eine hängende Prüfung darf die nächste Runde nicht aufhalten (M3).
 - **Sehr lange Ausfälle** (Stunden): werden normal als ein Ereignis protokolliert.
 - **Falsche Systemuhr:** Annahme: Windows synchronisiert die Uhr automatisch; NetWatch korrigiert sie nicht.
 
@@ -80,11 +87,12 @@ Typische Größe: wenige Zeilen pro Tag, auch bei Dauerbetrieb über Monate unte
 
 | ID | Testfall | Erwartetes Ergebnis |
 | --- | --- | --- |
-| F-01 | NetWatch 10 Minuten laufen lassen, Prüfungen im Debug-Protokoll zählen. | Pro Ziel 3.000 ± 1 % Prüfungen bei 200 ms Takt. |
+| F-01 | `NetWatch --diagnose 600` laufen lassen und die gezählten Prüfungen ablesen. | Pro Ziel 3.000 ± 1 % Prüfungen bei 200 ms Takt. |
 | F-02 | Automatischer Test mit simuliertem Prüfer: Ausfall aller Internetziele von 12:00:00,000 bis 12:00:01,500. | Genau ein Aussetzer, Beginn 12:00:00,000 ± 1 Takt, Dauer 1.500 ms ± 1 Takt. |
-| F-02 | Manuell: LAN-Kabel 5 s ziehen und Zeit mit Stoppuhr notieren. | Ein Aussetzer, Beginn auf die Sekunde mit der notierten Zeit übereinstimmend, Dauer 5 s ± 1 s. |
+| F-02 | Manuell: LAN-Kabel 5 s ziehen und Zeit mit Stoppuhr notieren. | Ein Aussetzer, Beginn auf die Sekunde mit der notierten Zeit übereinstimmend, Dauer 5 s ± 1 s. (Offen für M3: Der Adapter braucht nach dem Einstecken einige Sekunden; Vergleich mit den Adapterzeiten „Down“/„Up“ statt mit der Zeit ohne Kabel, siehe `decisions.md`.) |
 | F-02 | Automatischer Test: einzelne verlorene Prüfung an nur einem Ziel. | Kein Aussetzer. |
 | F-03 | Simulierter Prüfer: Router und Internet aus / nur Internet aus / Adapter getrennt. | Ursache `router` / `provider` / `pc_lan`. |
+| F-03 | Simulierter Prüfer: Router beantwortet nie Pings, Internet aus. | Ursache `unknown`. |
 | F-03 | Manuell: Router neu starten. | Ein Aussetzer mit Ursache `router`. |
 | F-04 | Ereignisprotokoll in Excel öffnen. | Spalten wie oben, Umlaute korrekt, eine Zeile pro Aussetzer. |
 | F-04 | Automatischer Test: Aussetzer über die Zeitumstellung 25.10.2026 02:59:59 MESZ bis 02:00:01 MEZ. | Dauer 2 s, nicht 1 h 0 min 2 s; UTC-Werte korrekt. |
